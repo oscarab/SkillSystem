@@ -1,0 +1,8 @@
+name: SkillSystem
+author: Oscar_Wen
+version: 1.0
+main: ow.SkillSystem.Main
+softdepend: [VexView]
+commands:
+  skillsystem:
+  skills:
