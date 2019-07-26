@@ -32,7 +32,7 @@ public class Main extends JavaPlugin{
 	
 	public static HashMap<String,ItemStack> items = new HashMap<>();
 	
-	//ÊÇ·ñ¿ª·Å¼üÅÌÊı×Ö¼ü´¥·¢¼¼ÄÜ
+	//æ˜¯å¦å¼€æ”¾é”®ç›˜æ•°å­—é”®è§¦å‘æŠ€èƒ½
 	public static boolean isKeyBoard = true;
 	
 	public void onEnable() {
@@ -43,25 +43,25 @@ public class Main extends JavaPlugin{
 			handle = new ConfigHandle();
 			handle.loadItems();
 			handle.loadSkills();
-			getLogger().info("ÅäÖÃÎÄ¼ş¼ÓÔØ³É¹¦£¡");
+			getLogger().info("é…ç½®æ–‡ä»¶åŠ è½½æˆåŠŸï¼");
 		} catch (IOException e) {
 			e.printStackTrace();
-			getLogger().info("´´½¨Ïà¹ØÅäÖÃÎÄ¼şÊ±³öÏÖ´íÎó£¡Çë¼ì²éÏà¹ØÎÄ¼ş£¡");
+			getLogger().info("åˆ›å»ºç›¸å…³é…ç½®æ–‡ä»¶æ—¶å‡ºç°é”™è¯¯ï¼è¯·æ£€æŸ¥ç›¸å…³æ–‡ä»¶ï¼");
 		}
 		
-		//³õÊ¼»¯ÏÖÓĞÍæ¼Ò
+		//åˆå§‹åŒ–ç°æœ‰ç©å®¶
 		initPlayer();
-		getLogger().info("³õÊ¼»¯Íê³ÉÏÖÓĞÍæ¼Ò£¡");
+		getLogger().info("åˆå§‹åŒ–å®Œæˆç°æœ‰ç©å®¶ï¼");
 		
 		runThread();
 		
-		//¼ÓÔØ¼àÌıÆ÷
+		//åŠ è½½ç›‘å¬å™¨
 		Bukkit.getPluginManager().registerEvents(new ItemUse() , this);
 		Bukkit.getPluginManager().registerEvents(new KeyboardUse(), this);
 		Bukkit.getPluginManager().registerEvents(new LivingEntityDamageListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		
-		getLogger().info("¼¼ÄÜÏµÍ³Æô¶¯Íê³É£¡");
+		getLogger().info("æŠ€èƒ½ç³»ç»Ÿå¯åŠ¨å®Œæˆï¼");
 	}
 	
 	private void initPlayer() {
@@ -83,7 +83,7 @@ public class Main extends JavaPlugin{
 	}
 
 	public void onDisable() {
-		getLogger().info("¼¼ÄÜÏµÍ³ÕıÔÚ±£´æÊı¾İ...");
+		getLogger().info("æŠ€èƒ½ç³»ç»Ÿæ­£åœ¨ä¿å­˜æ•°æ®...");
 		
 		Iterator<? extends Player> itn = Bukkit.getServer().getOnlinePlayers().iterator();
 		
@@ -96,7 +96,7 @@ public class Main extends JavaPlugin{
 		
 	}
 	
-	//Æô¶¯Ïß³Ì
+	//å¯åŠ¨çº¿ç¨‹
 	public void runThread() {
 		
 		Thread pthread = new SkillThread();
@@ -115,26 +115,16 @@ public class Main extends JavaPlugin{
 				Player p = getServer().getPlayer(args[1]);
 				ItemStack item = items.get(args[2]);
 				
-				if(p != null) {
+				if(p != null && p.isOp()) {
 					p.getInventory().addItem(item);
-					sender.sendMessage("³É¹¦¸øÓè");
+					sender.sendMessage("æˆåŠŸç»™äºˆ");
 				}else {
-					sender.sendMessage("¸ÃÍæ¼Ò²»ÔÚÏß");
+					sender.sendMessage("è¯¥ç©å®¶ä¸åœ¨çº¿");
 				}
 				
 			}else if(sender instanceof Player && args.length == 0) {
 				Player player = (Player) sender;
 				util.createInventory(player);
-			}
-			
-		}else if(cmd.getName().equalsIgnoreCase("skill")) {
-			
-			if(args.length == 1 && sender instanceof Player) {
-				Player p = (Player) sender;
-				SPlayer player = OnlineData.getSPlayer(p);
-				Skill skill = Main.skillsdata.get(args[0]);
-				
-				player.setSkill(skill);
 			}
 			
 		}

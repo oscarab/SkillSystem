@@ -10,9 +10,9 @@ import org.bukkit.util.Vector;
 
 public class SkillUtil {
 	/**
-	 *  À­³¶Ä¿±êÉúÎïµ½´ïÍæ¼Ò´¦
-	 * @param user  Ä¿µÄÍæ¼Ò
-	 * @param target  ±»À­³¶µÄÉúÎï
+	 *  æ‹‰æ‰¯ç›®æ ‡ç”Ÿç‰©åˆ°è¾¾ç©å®¶å¤„
+	 * @param user  ç›®çš„ç©å®¶
+	 * @param target  è¢«æ‹‰æ‰¯çš„ç”Ÿç‰©
 	 */
 	public void pull(Player user , LivingEntity target , double arg) { 
 		Location locuser = user.getEyeLocation();
@@ -22,9 +22,9 @@ public class SkillUtil {
 	}
 	
 	/**
-	 *   »÷ÍËÄ¿±ê
-	 * @param user  Ä¿µÄÍæ¼Ò
-	 * @param target ±»»÷ÍËµÄÉúÎï
+	 *   å‡»é€€ç›®æ ‡
+	 * @param user  ç›®çš„ç©å®¶
+	 * @param target è¢«å‡»é€€çš„ç”Ÿç‰©
 	 */
 	public void pushBack(Player user , LivingEntity target , double arg) {
 		Location locuser = user.getEyeLocation();
@@ -34,8 +34,8 @@ public class SkillUtil {
 	}
 	
 	/**
-	 * Ê¹Ä¿±ê·ÉÆğ
-	 * @param target Ä¿±ê
+	 * ä½¿ç›®æ ‡é£èµ·
+	 * @param target ç›®æ ‡
 	 * @param arg
 	 */
 	public void jump(LivingEntity target , double arg) {
@@ -47,9 +47,9 @@ public class SkillUtil {
 	}
 	
 	/**
-	 * ³¯Ä³ÉúÎïÖ¸ÏòµÄ·½Ïò·ÉÔ¾Ò»¶Î¾àÀë
-	 * @param entity Ê©ĞĞÉúÎï
-	 * @param length ·ÉÔ¾¾àÀë
+	 * æœæŸç”Ÿç‰©æŒ‡å‘çš„æ–¹å‘é£è·ƒä¸€æ®µè·ç¦»
+	 * @param entity æ–½è¡Œç”Ÿç‰©
+	 * @param length é£è·ƒè·ç¦»
 	 */
 	public void charge(LivingEntity entity , double length) {
 		Vector sight = entity.getEyeLocation().getDirection().clone();
@@ -58,9 +58,9 @@ public class SkillUtil {
 	
 	
 	/**
-	 * »ñÈ¡Íæ¼ÒÖ¸ÏòµÄÉúÎï
-	 * @param p Íæ¼Ò
-	 * @return ÈôÓĞÔò·µ»Ø¸ÃÉúÎï£¬ÈôÎŞ·µ»Ønull
+	 * è·å–ç©å®¶æŒ‡å‘çš„ç”Ÿç‰©
+	 * @param p ç©å®¶
+	 * @return è‹¥æœ‰åˆ™è¿”å›è¯¥ç”Ÿç‰©ï¼Œè‹¥æ— è¿”å›null
 	 */
 	public LivingEntity getTargetEntity(Player p) { 
 		List<Entity> entities = p.getNearbyEntities(3.0, 3.0, 3.0);

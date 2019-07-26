@@ -14,7 +14,7 @@ public class LivingEntityDamageListener implements Listener{
 	@EventHandler
 	public void onDamage(EntityDamageByEntityEvent event) {
 		
-		//¸ù¾İ¹¥»÷Õß½øĞĞÉËº¦µ÷Õû
+		//æ ¹æ®æ”»å‡»è€…è¿›è¡Œä¼¤å®³è°ƒæ•´
 		if(event.getDamager() instanceof LivingEntity) {
 			
 			LivingEntity entity = (LivingEntity) event.getDamager();
@@ -35,7 +35,7 @@ public class LivingEntityDamageListener implements Listener{
 			
 		}
 		
-		//µ÷ÕûËùÊÜÉËº¦
+		//è°ƒæ•´æ‰€å—ä¼¤å®³
 		if(event.getEntity() instanceof LivingEntity) {
 			
 			LivingEntity entity = (LivingEntity) event.getEntity();
@@ -49,13 +49,13 @@ public class LivingEntityDamageListener implements Listener{
 			
 		}
 		
-		event.getDamager().sendMessage("ÄãÔì³ÉÁË"+event.getDamage()+"µãÉËº¦");
+		event.getDamager().sendMessage("ä½ é€ æˆäº†"+event.getDamage()+"ç‚¹ä¼¤å®³");
 		
 	}
 	
 	@EventHandler
 	public void onAllDamagae(EntityDamageEvent event) {
-		//ÎŞµĞÉè¶¨
+		//æ— æ•Œè®¾å®š
 		if(event.getEntity() instanceof LivingEntity) {
 			
 			LivingEntity entity = (LivingEntity) event.getEntity();

@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import ow.SkillSystem.Main;
 import ow.SkillSystem.skills.Skill;
 
-//ÅäÖÃÎÄ¼ş´¦Àí
+//é…ç½®æ–‡ä»¶å¤„ç†
 public class ConfigHandle {
   private File skills;
   private YamlConfiguration skillsyml;
@@ -23,14 +23,14 @@ public class ConfigHandle {
   private YamlConfiguration itemsyml;
   
   public ConfigHandle() throws IOException {
-	  //¼¼ÄÜ
+	  //æŠ€èƒ½
 		skills = new File("./plugins/SkillSystem/skills.yml");
 		skillsyml = YamlConfiguration.loadConfiguration(skills);
 		if(!skills.exists()) {
 			skillsyml.save(skills);
 		}
 		
-		//ÎïÆ·
+		//ç‰©å“
 		items = new File("./plugins/SkillSystem/items.yml");
 		itemsyml = YamlConfiguration.loadConfiguration(items);
 		if(!items.exists()) {
@@ -39,7 +39,7 @@ public class ConfigHandle {
 		
   }
   
-  //ÔØÈë¼¼ÄÜÎÄ¼ş
+  //è½½å…¥æŠ€èƒ½æ–‡ä»¶
   public void loadSkills() {
 		Iterator<String> itn = skillsyml.getKeys(false).iterator();
 		while(itn.hasNext()) {
@@ -56,7 +56,7 @@ public class ConfigHandle {
 		}
   }
   
-  //ÔØÈëÎïÆ·
+  //è½½å…¥ç‰©å“
   public void loadItems() {
 		Iterator<String> itn = itemsyml.getKeys(false).iterator();
 		while(itn.hasNext()) {
@@ -76,7 +76,7 @@ public class ConfigHandle {
 		}
   }
   
-  //³õÊ¼»¯¼ÓÔØÍæ¼ÒµÄ°´¼üÇé¿ö
+  //åˆå§‹åŒ–åŠ è½½ç©å®¶çš„æŒ‰é”®æƒ…å†µ
   public void loadPlayerYML(SPlayer player) throws IOException {
 	  
 		File playerf = new File("./plugins/SkillSystem/Players/"+player.getPlayer().getName()+".yml");
@@ -96,7 +96,7 @@ public class ConfigHandle {
 		
   }
   
-  //±£´æÍæ¼Ò°´¼üÊı¾İÇé¿ö
+  //ä¿å­˜ç©å®¶æŒ‰é”®æ•°æ®æƒ…å†µ
   public void savePlayerYML(HashMap<Integer,Skill> kb , Player player) throws IOException {
 	  
 		File playerf = new File("./plugins/SkillSystem/Players/"+player.getPlayer().getName()+".yml");

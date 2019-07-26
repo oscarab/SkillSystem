@@ -6,11 +6,11 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 public class Skill {
-  private String name;         //¼¼ÄÜÃû×Ö
-  private int cooldown;        //ÀäÈ´Ê±¼ä
+  private String name;         //æŠ€èƒ½åå­—
+  private int cooldown;        //å†·å´æ—¶é—´
   private boolean needPermission = true;
   private String message;
-  private boolean canKey = false;    //ÄÜ·ñÓÃ°´¼ü´¥·¢
+  private boolean canKey = false;    //èƒ½å¦ç”¨æŒ‰é”®è§¦å‘
   
   private List<SkillSingleExecution> executions = new ArrayList<>();
 
@@ -22,7 +22,7 @@ public class Skill {
 	  canKey = cank;
   }
   
-  //µ¼Èëµ¥Ìõ¼¼ÄÜÖ´ĞĞ
+  //å¯¼å…¥å•æ¡æŠ€èƒ½æ‰§è¡Œ
   public void setExecution(List<String> lists) {
 	  for(String arg : lists) {
 		  SkillSingleExecution execution = new SkillSingleExecution(arg);
@@ -34,7 +34,7 @@ public class Skill {
 	  return cooldown;
   }
   
-  //»ñÈ¡Î´ÀäÈ´Íê±ÏµÄÌáÊ¾
+  //è·å–æœªå†·å´å®Œæ¯•çš„æç¤º
   public String getMessage() {
 	  return message;
   }
@@ -43,7 +43,7 @@ public class Skill {
 	  return name;
   }
   
-  //ÊÇ·ñ¿ÉÓÃ¼üÅÌ´¥·¢
+  //æ˜¯å¦å¯ç”¨é”®ç›˜è§¦å‘
   public boolean canUseKeyBoard() {
 	  return canKey;
   }
@@ -53,8 +53,8 @@ public class Skill {
   }
   
   /**
-   * ¼¼ÄÜÖ´ĞĞ
-   * @param user ¼¼ÄÜÊ¹ÓÃÕß
+   * æŠ€èƒ½æ‰§è¡Œ
+   * @param user æŠ€èƒ½ä½¿ç”¨è€…
    */
   public void run(Player user) {
 	  

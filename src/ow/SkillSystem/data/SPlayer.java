@@ -12,16 +12,16 @@ import ow.SkillSystem.skills.SkillSingleExecution;
 public class SPlayer {
    private Player player;
    
-   //Õı¿ªÆôµÄ¼¼ÄÜ£¬¶ÔÓ¦ÀäÈ´Ê±¼ä
+   //æ­£å¼€å¯çš„æŠ€èƒ½ï¼Œå¯¹åº”å†·å´æ—¶é—´
    private HashMap<Skill,Integer> skills = new HashMap<>();
    
-   /*¿É³ÖĞøµÄ±ê¼Çµ¥¸ö¼¼ÄÜÖ´ĞĞ£¬¶ÔÓ¦³ÖĞøµÄÊ±¼ä
-    * Èô´óÓÚ0Îª³ÖĞøĞÔ
-    * ÈôĞ¡ÓÚ0ÎªÏÂ´ÎĞÔ
+   /*å¯æŒç»­çš„æ ‡è®°å•ä¸ªæŠ€èƒ½æ‰§è¡Œï¼Œå¯¹åº”æŒç»­çš„æ—¶é—´
+    * è‹¥å¤§äº0ä¸ºæŒç»­æ€§
+    * è‹¥å°äº0ä¸ºä¸‹æ¬¡æ€§
     */
    private HashMap<SkillSingleExecution,Integer>  executions = new HashMap<>();
    
-   //°´¼üËù¶ÔÓ¦µÄ¼¼ÄÜ
+   //æŒ‰é”®æ‰€å¯¹åº”çš„æŠ€èƒ½
    private HashMap<Integer , Skill> keyBoard = new HashMap<>();
    
    public SPlayer(Player p) {
@@ -32,17 +32,17 @@ public class SPlayer {
 	   return player;
    }
    
-   //ĞÂÌí¼¼ÄÜ¶ÔÓ¦µÄ°´¼ü
+   //æ–°æ·»æŠ€èƒ½å¯¹åº”çš„æŒ‰é”®
    public void addKeyBoardSetting(int key , Skill skill) {
 	   keyBoard.put(key, skill);
    }
    
-   //»ñÈ¡°´¼üËù¶ÔÓ¦µÄ¼¼ÄÜ
+   //è·å–æŒ‰é”®æ‰€å¯¹åº”çš„æŠ€èƒ½
    public Skill getKeyBoardSkill(int key) {
 	   return keyBoard.get(key);
    }
    
-   //»ñÈ¡¼¼ÄÜ¶ÔÓ¦µÄ°´¼ü
+   //è·å–æŠ€èƒ½å¯¹åº”çš„æŒ‰é”®
    public int getKeyBoardSkill(Skill skill) {
 	   Iterator<Integer> keys = keyBoard.keySet().iterator();
 	   
@@ -58,7 +58,7 @@ public class SPlayer {
 	   return -1;
    }
    
-   //ÒÆ³ı¼¼ÄÜµÄ°ó¶¨
+   //ç§»é™¤æŠ€èƒ½çš„ç»‘å®š
    public void removeKeyBoardSkill(Skill skill) {
 	   Iterator<Integer> keys = keyBoard.keySet().iterator();
 	   
@@ -67,12 +67,12 @@ public class SPlayer {
 		   Skill sk = keyBoard.get(key);
 		   
 		   if(skill.equals(sk)) {
-			   keys.remove();
+			   keyBoard.put(key, null);
 		   }
 	   }
    }
    
-   //±£´æ¼üÅÌÇé¿ö
+   //ä¿å­˜é”®ç›˜æƒ…å†µ
    public void saveKeyBoard(){
 	   
 	   try {
@@ -83,7 +83,7 @@ public class SPlayer {
 	   
    }
    
-   //ÈÃÍæ¼ÒÖ´ĞĞ¼¼ÄÜ
+   //è®©ç©å®¶æ‰§è¡ŒæŠ€èƒ½
    public void setSkill(Skill skill) {
 	   
 	   if(skill.getIsNeedPermission() && !player.hasPermission("SkillSystem."+skill.getName())) {
@@ -101,17 +101,17 @@ public class SPlayer {
 	   
    }
    
-   //¼¼ÄÜÊÇ·ñÔÚÀäÈ´
+   //æŠ€èƒ½æ˜¯å¦åœ¨å†·å´
    public boolean isSkillCooldown (Skill skill) {
 	   return skills.keySet().contains(skill);
    }
    
-   //ÔöÌí±ê¼ÇµÄ¼¼ÄÜÌõ
+   //å¢æ·»æ ‡è®°çš„æŠ€èƒ½æ¡
    public void addExecution(SkillSingleExecution execution , int time) {
 	   executions.put(execution, time);
    }
    
-   //Ö´ĞĞÔÚÊ±¼äÄÚµÄ¼¼ÄÜÌõ
+   //æ‰§è¡Œåœ¨æ—¶é—´å†…çš„æŠ€èƒ½æ¡
    public void runExecution(String type) {
 	   Iterator<SkillSingleExecution> it = executions.keySet().iterator();
 
@@ -125,7 +125,7 @@ public class SPlayer {
 
 			   arg.runWithoutCondition(player);
 			   
-			   //´¦ÀíµôÏÂ´ÎĞÔµÄ¼¼ÄÜÌõ
+			   //å¤„ç†æ‰ä¸‹æ¬¡æ€§çš„æŠ€èƒ½æ¡
 			   if(condition.contains("Next")) {
 				   it.remove();
 			   }
@@ -135,7 +135,7 @@ public class SPlayer {
 	   
    }
    
-   //´¦Àíµ¥ÌõÖ´ĞĞµÄµ¹¼ÆÊ±ÎÊÌâ
+   //å¤„ç†å•æ¡æ‰§è¡Œçš„å€’è®¡æ—¶é—®é¢˜
    public void handleExecutionTime() {
 	   Iterator<SkillSingleExecution> it = executions.keySet().iterator();
 	   
@@ -158,7 +158,7 @@ public class SPlayer {
 	   
    }
    
-   //´¦Àí¼¼ÄÜµÄµ¹¼ÆÊ±ÎÊÌâ
+   //å¤„ç†æŠ€èƒ½çš„å€’è®¡æ—¶é—®é¢˜
    public void handleSkillTime() {
 	   Iterator<Skill> it = skills.keySet().iterator();
 	   

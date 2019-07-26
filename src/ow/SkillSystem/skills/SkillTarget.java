@@ -1,5 +1,5 @@
 package ow.SkillSystem.skills;
 
-public enum SkillTarget {      //技能释放的对象
+public enum SkillTarget {      //鎶�鑳介噴鏀剧殑瀵硅薄
     PointEntity,RaduisEntity,Self
 }

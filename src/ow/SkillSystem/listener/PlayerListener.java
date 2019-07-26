@@ -21,7 +21,7 @@ public class PlayerListener implements Listener{
 		SPlayer player = new SPlayer(p);
 		
 		try {
-			//¼ÓÔØÍæ¼Ò°´¼üĞÅÏ¢
+			//åŠ è½½ç©å®¶æŒ‰é”®ä¿¡æ¯
 			Main.handle.loadPlayerYML(player);
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -34,7 +34,7 @@ public class PlayerListener implements Listener{
 	public void onQuit(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
 		
-		//Íæ¼Ò°´¼üĞÅÏ¢±£´æ
+		//ç©å®¶æŒ‰é”®ä¿¡æ¯ä¿å­˜
 		OnlineData.players.get(p).saveKeyBoard();
 		
 		OnlineData.players.remove(p);
@@ -42,7 +42,7 @@ public class PlayerListener implements Listener{
 	
 	@EventHandler
 	public void onDamage(EntityDamageByEntityEvent event) {
-		//ÈÃÍæ¼ÒÖ´ĞĞÔÚÊ±¼äÄÚµÄ¼¼ÄÜÌõ
+		//è®©ç©å®¶æ‰§è¡Œåœ¨æ—¶é—´å†…çš„æŠ€èƒ½æ¡
 		if(event.getDamager() instanceof Player) {
 			Player p = (Player) event.getDamager();
 			SPlayer player = OnlineData.getSPlayer(p);
@@ -52,7 +52,7 @@ public class PlayerListener implements Listener{
 		
 	}
 	
-	//·µ»ØÉËº¦ÀàĞÍ£¬»÷É±»ò¹¥»÷
+	//è¿”å›ä¼¤å®³ç±»å‹ï¼Œå‡»æ€æˆ–æ”»å‡»
 	String getAttackType(EntityDamageByEntityEvent event) {
 		if(event.getEntity().isDead()) {
 			return "KILL";

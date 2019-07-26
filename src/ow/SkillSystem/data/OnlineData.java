@@ -10,20 +10,23 @@ import ow.SkillSystem.Main;
 
 public class OnlineData {
 	
-	//µ÷Õû´ò³öµÄÉËº¦    ¸ñÊ½£º   ÉúÎï/ÉËº¦ÉèÖÃ/³ÖĞøÊ±¼ä  ÕıÊıÊÇÔö¼ÓÉËº¦£¬¸ºÊıÊÇ¼õÉÙ
+	//è°ƒæ•´æ‰“å‡ºçš„ä¼¤å®³    æ ¼å¼ï¼š   ç”Ÿç‰©/ä¼¤å®³è®¾ç½®/æŒç»­æ—¶é—´  æ­£æ•°æ˜¯å¢åŠ ä¼¤å®³ï¼Œè´Ÿæ•°æ˜¯å‡å°‘
 	public static HashMap<LivingEntity,String> damageset = new HashMap<>();
 	
-	//µ÷ÕûËùÊÜµÄÉËº¦   ¸ñÊ½£º   ÉúÎï/ÉËº¦ÉèÖÃ/³ÖĞøÊ±¼ä      
-	//ÈôÎª0ÔòÊÇÎŞµĞ£¬ÕıÊıÊÇÔö¼ÓËùÊÜÉËº¦£¬¸ºÊıÊÇ¼õÉÙËùÊÜÉËº¦
+	//è°ƒæ•´æ‰€å—çš„ä¼¤å®³   æ ¼å¼ï¼š   ç”Ÿç‰©/ä¼¤å®³è®¾ç½®/æŒç»­æ—¶é—´      
+	//è‹¥ä¸º0åˆ™æ˜¯æ— æ•Œï¼Œæ­£æ•°æ˜¯å¢åŠ æ‰€å—ä¼¤å®³ï¼Œè´Ÿæ•°æ˜¯å‡å°‘æ‰€å—ä¼¤å®³
 	public static HashMap<LivingEntity,String> damagedset = new HashMap<>();
 	
-	//Íæ¼ÒÁĞ±í
+	//ç”Ÿç‰©ç°å½¢æ ‡è®°
+	public static HashMap<LivingEntity , Integer> entityglowing = new HashMap<>();
+	
+	//ç©å®¶åˆ—è¡¨
 	public static HashMap<Player,SPlayer> players = new HashMap<>();
 	
-	//Íæ¼Ò°ó¶¨¼¼ÄÜµÄ±ê¼Ç
+	//ç©å®¶ç»‘å®šæŠ€èƒ½çš„æ ‡è®°
 	public static HashMap<Player , String> playersetkey = new HashMap<>();
 	
-	//·µ»ØÄ³¸öÉúÎïµÄÉËº¦Éè¶¨
+	//è¿”å›æŸä¸ªç”Ÿç‰©çš„ä¼¤å®³è®¾å®š
 	public static double getDamage(LivingEntity entity) {
 		if(damageset.get(entity)==null) return 0;
 		
@@ -31,12 +34,12 @@ public class OnlineData {
 		return Main.util.getDoubleNumber(parts[0]);
 	}
 	
-	//Ôö¼ÓÉúÎï´ò³öÉËº¦Éè¶¨
+	//å¢åŠ ç”Ÿç‰©æ‰“å‡ºä¼¤å®³è®¾å®š
 	public static void addDamageSet(LivingEntity entity , double ds , int time) {
 		damageset.put(entity, ds+"/"+time);
 	}
 	
-	//ĞŞ¸ÄÉúÎï´ò³öÉËº¦Éè¶¨£¨ÔÚÔ­»ù´¡ÉÏÔö¼Ó£©
+	//ä¿®æ”¹ç”Ÿç‰©æ‰“å‡ºä¼¤å®³è®¾å®šï¼ˆåœ¨åŸåŸºç¡€ä¸Šå¢åŠ ï¼‰
 	public static void setDamageSet(LivingEntity entity , double dsplus) {
 		String[] parts = damageset.get(entity).split("/");
 		int time = Main.util.getIntNumber(parts[1]);
@@ -46,19 +49,19 @@ public class OnlineData {
 	
 	/*===============================================================*/
 	
-	//·µ»ØËùÊÜÉËº¦µÄµ÷Õû
+	//è¿”å›æ‰€å—ä¼¤å®³çš„è°ƒæ•´
 	public static String getDamaged(LivingEntity entity) {
 		if(damagedset.get(entity) == null) return null;
 		
 		return damagedset.get(entity).split("/")[0];
 	}
 	
-	//Ôö¼ÓÉúÎïËùÊÜÉËº¦Éè¶¨
+	//å¢åŠ ç”Ÿç‰©æ‰€å—ä¼¤å®³è®¾å®š
 	public static void addDamagedSet(LivingEntity entity , double ds , int time) {
 		damagedset.put(entity, ds+"/"+time);
 	}
 	
-	//ĞŞ¸ÄÉúÎïËùÊÜÉËº¦Éè¶¨£¨ÔÚÔ­»ù´¡ÉÏÔö¼Ó£©
+	//ä¿®æ”¹ç”Ÿç‰©æ‰€å—ä¼¤å®³è®¾å®šï¼ˆåœ¨åŸåŸºç¡€ä¸Šå¢åŠ ï¼‰
 	public static void setDamagedSet(LivingEntity entity , double dsplus) {
 		String[] parts = damagedset.get(entity).split("/");
 		int time = Main.util.getIntNumber(parts[1]);
@@ -68,7 +71,7 @@ public class OnlineData {
 	
 	/*===============================================================*/
 	
-	//Ê±¼äÁ÷ÊÅ
+	//æ—¶é—´æµé€
 	public static void setTime1() {
 		
 		Iterator<LivingEntity> it =  damageset.keySet().iterator();
@@ -107,7 +110,7 @@ public class OnlineData {
 		
 	}
 	
-	//»ñÈ¡splayer
+	//è·å–splayer
 	public static SPlayer getSPlayer(Player p) {
 		return players.get(p);
 	}

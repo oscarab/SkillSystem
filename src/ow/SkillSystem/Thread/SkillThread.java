@@ -2,6 +2,7 @@ package ow.SkillSystem.Thread;
 
 import java.util.Iterator;
 
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import ow.SkillSystem.data.OnlineData;
@@ -9,7 +10,7 @@ import ow.SkillSystem.data.SPlayer;
 
 public class SkillThread extends Thread{
 	
-	//ÓĞ¹ØÍæ¼ÒµÄ¼¼ÄÜÀäÈ´»òµ¹¼ÆÊ±
+	//æœ‰å…³ç©å®¶çš„æŠ€èƒ½å†·å´æˆ–å€’è®¡æ—¶
 	public void run() {
 		
 		while(true) {
@@ -19,6 +20,19 @@ public class SkillThread extends Thread{
 				SPlayer player =  OnlineData.players.get(it.next());
 				player.handleSkillTime();
 				player.handleExecutionTime();
+			}
+			
+			//æš‚æ—¶
+			Iterator<LivingEntity> entities = OnlineData.entityglowing.keySet().iterator();
+			while(entities.hasNext()) {
+				LivingEntity entity = entities.next();
+				int time = OnlineData.entityglowing.get(entity);
+				if(time == 0) {
+					entity.setGlowing(false);
+					entities.remove();
+				}else {
+					OnlineData.entityglowing.put(entity, time-1);
+				}
 			}
 			
 			try {

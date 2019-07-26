@@ -27,19 +27,19 @@ public class KeyboardUse implements Listener{
 		int key = event.getKey();
 		Skill skill = player.getKeyBoardSkill(key);
 		
-		//ÊÍ·Å¼¼ÄÜ
+		//é‡Šæ”¾æŠ€èƒ½
 		if(skill!=null) {
 			player.setSkill(skill);
 		}
 		
-		//¼¼ÄÜ°ó¶¨ÊÂÒË
+		//æŠ€èƒ½ç»‘å®šäº‹å®œ
 		if(OnlineData.playersetkey.get(p) != null) {
 			
-			if(key == 57) {  //ÈôÎª¿Õ¸ñÍË³ö°ó¶¨
-				p.sendMessage("¡ì0¡ìl³É¹¦ÍË³ö°ó¶¨£¡");
+			if(key == 57) {  //è‹¥ä¸ºç©ºæ ¼é€€å‡ºç»‘å®š
+				p.sendMessage("Â§fÂ§læˆåŠŸé€€å‡ºç»‘å®šï¼");
 			}else {
 				player.addKeyBoardSetting(key, Main.skillsdata.get( OnlineData.playersetkey.get(p) ) );
-				p.sendMessage("¡ì0¡ìl³É¹¦°ó¶¨£¡");
+				p.sendMessage("Â§fÂ§læˆåŠŸç»‘å®šï¼");
 			}
 
 			OnlineData.playersetkey.remove(p);
@@ -47,13 +47,14 @@ public class KeyboardUse implements Listener{
 		
 	}
 	
-	//¼àÌı¼¼ÄÜ°ó¶¨·½ÃæµÄ°´ÏÂ
+	//ç›‘å¬æŠ€èƒ½ç»‘å®šæ–¹é¢çš„æŒ‰ä¸‹
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
 		Inventory inv = event.getClickedInventory();
 		InventoryView view = event.getView();
+		if(inv == null || view == null) { return; }
 		
-		if(view.getTitle().contains("[¼¼ÄÜÏµÍ³]°´¼ü°ó¶¨") && event.getWhoClicked() instanceof Player) {
+		if(view.getTitle().contains("[æŠ€èƒ½ç³»ç»Ÿ]æŒ‰é”®ç»‘å®š") && event.getWhoClicked() instanceof Player) {
 			
 			ItemStack item = inv.getItem(event.getSlot());
 			if(item == null || !item.getItemMeta().hasLore()) return;
@@ -61,15 +62,15 @@ public class KeyboardUse implements Listener{
 			String name = item.getItemMeta().getDisplayName();
 			Player player = (Player) event.getWhoClicked();
 			
-			if(item.getItemMeta().getLore().get(1).contains("Î´°ó¶¨") && event.getClick().equals(ClickType.LEFT)) {
-				//×ó¼ü¿ªÊ¼°ó¶¨
+			if(item.getItemMeta().getLore().get(1).contains("æœªç»‘å®š") && event.getClick().equals(ClickType.LEFT)) {
+				//å·¦é”®å¼€å§‹ç»‘å®š
 				OnlineData.playersetkey.put(player, name);
-				player.sendMessage("¡ì0¡ìlÇë°´ÏÂÄãĞèÒª°ó¶¨µÄ°´¼ü");
+				player.sendMessage("Â§fÂ§lè¯·æŒ‰ä¸‹ä½ éœ€è¦ç»‘å®šçš„æŒ‰é”®");
 				
-			}else if(item.getItemMeta().getLore().get(1).contains("°ó¶¨°´¼ü") && event.getClick().equals(ClickType.RIGHT)) {
-				//ÓÒ¼ü¿ÉÒÔ½â³ı°ó¶¨
+			}else if(item.getItemMeta().getLore().get(1).contains("ç»‘å®šæŒ‰é”®") && event.getClick().equals(ClickType.RIGHT)) {
+				//å³é”®å¯ä»¥è§£é™¤ç»‘å®š
 				OnlineData.getSPlayer(player).removeKeyBoardSkill( Main.skillsdata.get(name) );
-				player.sendMessage("¡ì0¡ìl³É¹¦½â³ı°ó¶¨");
+				player.sendMessage("Â§fÂ§læˆåŠŸè§£é™¤ç»‘å®š");
 				
 			}
 			

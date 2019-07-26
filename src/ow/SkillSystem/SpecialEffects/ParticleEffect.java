@@ -6,16 +6,16 @@ import org.bukkit.World;
 
 public class ParticleEffect {
 	private Particle particle;
-	private int time;
+	private int count;
 	
-	public ParticleEffect(String name , int time) {
+	public ParticleEffect(String name , int count) {
 		particle = Particle.valueOf(name);
-		this.time = time;
+		this.count = count;
 	}
 	
-	//生成简单的单个粒子
+	//鐢熸垚绠�鍗曠殑鍗曚釜绮掑瓙
 	public void playNormal(World world , Location location) {
-		world.spawnParticle(particle , location.getX() , location.getY() , location.getZ() , time*20);
+		world.spawnParticle(particle, location, count);
 	}
 
 }

@@ -31,7 +31,7 @@ public class ItemUse implements Listener{
 			lores.addAll(meta.getLore());
 			SPlayer p = OnlineData.getSPlayer(event.getPlayer());
 			
-			//Èç¹ûÎïÆ·loreÀïº¬ÓĞ¼¼ÄÜÃû×Ö¾Í´¥·¢¼¼ÄÜ
+			//å¦‚æœç‰©å“loreé‡Œå«æœ‰æŠ€èƒ½åå­—å°±è§¦å‘æŠ€èƒ½
 			for(String lore : lores) {
 				for(Skill skill : Main.skills) {
 					if(lore.contains(skill.getName())) {

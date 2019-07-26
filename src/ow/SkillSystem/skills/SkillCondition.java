@@ -9,18 +9,18 @@ import ow.SkillSystem.Main;
 import ow.SkillSystem.Util;
 
 public class SkillCondition { 
-	//´¥·¢¼¼ÄÜµÄÌõ¼ş
+	//è§¦å‘æŠ€èƒ½çš„æ¡ä»¶
     private String[] conditions = {"SelfHealth","EveryAttacking",
     "EveryKilling","TargetHealth","ItemConsuming","OnAir",
     "ItemHas","NextAtttacking","NextKilling","Run","None"};
     private String condition;
-    //ÓĞ¹ØÊıÖµ
+    //æœ‰å…³æ•°å€¼
     private int amount;
-    //ÓĞ¹ØÎïÆ·
+    //æœ‰å…³ç‰©å“
     private ItemStack item;
-    //µÈÓÚ0£¬´óÓÚ2£¬´óÓÚµÈÓÚ1£¬Ğ¡ÓÚµÈÓÚ-1£¬Ğ¡ÓÚ-2
+    //ç­‰äº0ï¼Œå¤§äº2ï¼Œå¤§äºç­‰äº1ï¼Œå°äºç­‰äº-1ï¼Œå°äº-2
     private int sign;
-    //ÊÇ·ñÎŞÌõ¼ş
+    //æ˜¯å¦æ— æ¡ä»¶
     private boolean isNone = false;
     
     public SkillCondition(String part) {
@@ -33,7 +33,7 @@ public class SkillCondition {
     	}
     }
     
-    //´¦Àí¹ØÓÚÉúÃüÖµµÄÌõ¼ş
+    //å¤„ç†å…³äºç”Ÿå‘½å€¼çš„æ¡ä»¶
     private void setAboutHealth(String part){
     	Util util = new Util();
     	if(part.contains("SelHealth")) {
@@ -45,7 +45,7 @@ public class SkillCondition {
 		amount = util.getIntNumber(part);
     }
     
-    //´¦Àí¹ØÓÚÎïÆ·µÄÌõ¼ş
+    //å¤„ç†å…³äºç‰©å“çš„æ¡ä»¶
     private void setAboutItem(String part) {
     	String[] parts = part.split(":");
     	condition = parts[0];
@@ -53,7 +53,7 @@ public class SkillCondition {
     	amount = Integer.parseInt(parts[2]);
     }
     
-    //´¦Àí¹ØÓÚÎŞ¸½¼ÓÊôĞÔµÄÌõ¼ş
+    //å¤„ç†å…³äºæ— é™„åŠ å±æ€§çš„æ¡ä»¶
     private void setSingleCondition(String part) {
     	if(part.equalsIgnoreCase("None")) {
     		isNone = true;
@@ -67,15 +67,15 @@ public class SkillCondition {
     	return condition;
     }
     
-    //ÊÇ·ñĞèÒª±ê¼Ç
+    //æ˜¯å¦éœ€è¦æ ‡è®°
     public boolean isNeedSign() {
     	return getCondition().contains("Attack")||
   			  getCondition().contains("Kill");
     }
     
-    //¼ì²éÊÇ·ñÂú×ãÌõ¼ş
+    //æ£€æŸ¥æ˜¯å¦æ»¡è¶³æ¡ä»¶
     public boolean check(Player self,LivingEntity target) {
-    	//¼ì²âÑªÁ¿
+    	//æ£€æµ‹è¡€é‡
     	if(condition.contains("Health")) {
         	double health = condition.contains("Self")?self.getHealth():target.getHealth();
         	switch(sign) {
@@ -95,10 +95,10 @@ public class SkillCondition {
         		return health == amount;
         	}
         	}
-    	}//¼ì²âÊÇ·ñÔÚ¿ÕÖĞ
+    	}//æ£€æµ‹æ˜¯å¦åœ¨ç©ºä¸­
     	else if(condition.equalsIgnoreCase("OnAir")) {
     		return !self.isOnGround();
-    	}//¼ì²âÎïÆ·ÏûºÄ
+    	}//æ£€æµ‹ç‰©å“æ¶ˆè€—
     	else if(condition.equalsIgnoreCase("ItemConsuming")) {
 
     		PlayerInventory inv = self.getInventory();
@@ -109,27 +109,27 @@ public class SkillCondition {
     			return true;
     		}
     		return false;
-    	}//¼ì²âÎïÆ·ÓµÓĞ
+    	}//æ£€æµ‹ç‰©å“æ‹¥æœ‰
     	else if(condition.equalsIgnoreCase("ItemHas")) {
 
     		return hasItem(item , self.getInventory() , amount);
-    	}//¼ì²â±¼ÅÜ
+    	}//æ£€æµ‹å¥”è·‘
     	else if(condition.equalsIgnoreCase("Run")) {
     		return self.isSprinting();
     	}
-    	//ÎŞÌõ¼ş
+    	//æ— æ¡ä»¶
     	else if(isNone) {
     		return true;
     	}
 		return false;
     }
     
-    //ÒÆ³ı±³°üÄÚÖ¸¶¨ÊıÁ¿µÄÎïÆ·
+    //ç§»é™¤èƒŒåŒ…å†…æŒ‡å®šæ•°é‡çš„ç‰©å“
     private void removeItem(ItemStack item , PlayerInventory inv , int arg) {
     	
     	for(int i  = 0 ; i < inv.getSize() ; i++) {
     		ItemStack it = inv.getItem(i);
-    		//Ñ°ÕÒ±³°üÖĞËùĞèÒªµÄÎïÆ·
+    		//å¯»æ‰¾èƒŒåŒ…ä¸­æ‰€éœ€è¦çš„ç‰©å“
     		if(it != null && item.isSimilar(it)) {
     			
     			if(it.getAmount() > arg) {
@@ -148,7 +148,7 @@ public class SkillCondition {
     	
     }
     
-    //¼ì²â±³°üÊÇ·ñÓĞÖ¸¶¨ÊıÁ¿µÄÎïÆ·
+    //æ£€æµ‹èƒŒåŒ…æ˜¯å¦æœ‰æŒ‡å®šæ•°é‡çš„ç‰©å“
     private boolean hasItem(ItemStack item , PlayerInventory inv , int arg) {
     	
     	for(int i  = 0 ; i < inv.getSize() ; i++) {

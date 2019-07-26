@@ -13,11 +13,11 @@ import ow.SkillSystem.SpecialEffects.ParticleEffect;
 import ow.SkillSystem.SpecialEffects.SoundEffect;
 import ow.SkillSystem.data.OnlineData;
 
-public class SkillEffect {   //¼¼ÄÜÊµ¼ÊĞ§¹û
+public class SkillEffect {   //æŠ€èƒ½å®é™…æ•ˆæœ
     @SuppressWarnings("unused")
 	private String[] effects = {"Charge","PotionEffect",
     		"DamageSet","Damage","HealthSet",
-    		"ShowEntity","ShootArrows","Fire","Lightning",
+    		"ShootArrows","Fire","Lightning",
     "Pull","PushBack","Message","ParticleEffect","SoundEffect",
     "Jump","Explosion","DamagedSet","Stop"};
     private String effect;
@@ -27,7 +27,7 @@ public class SkillEffect {   //¼¼ÄÜÊµ¼ÊĞ§¹û
     private ParticleEffect particleeffect;
     private SoundEffect soundeffect;
     
-    //¿ªÊ¼´¦Àí¼¼ÄÜÌõÖĞµÄĞ§¹û²¿·Ö
+    //å¼€å§‹å¤„ç†æŠ€èƒ½æ¡ä¸­çš„æ•ˆæœéƒ¨åˆ†
     public SkillEffect(String part) {
     	if(part.startsWith("PotionEffect")) {
     		setPotionEffect(part.split(":"));
@@ -40,7 +40,7 @@ public class SkillEffect {   //¼¼ÄÜÊµ¼ÊĞ§¹û
     	}
     }
     
-    /*´¦ÀíĞ§¹ûºó½öµ¥¸öÊı×Ö
+    /*å¤„ç†æ•ˆæœåä»…å•ä¸ªæ•°å­—
      * Charge DamageSet Damage HealthIncrease
      * Fire Pull PushBack ShootArrows Jump
      */
@@ -50,20 +50,20 @@ public class SkillEffect {   //¼¼ÄÜÊµ¼ÊĞ§¹û
     	effect = parts[0];
     }
     
-    //´¦ÀíÒ©Ë®Ğ§¹û
+    //å¤„ç†è¯æ°´æ•ˆæœ
     private void setPotionEffect(String[] parts) {
     	Util util = new Util();
-    	potioneffect = new PotionEffect(PotionEffectType.getByName(parts[1]),util.getIntNumber(parts[2]),util.getIntNumber(parts[3]));
+    	potioneffect = new PotionEffect(PotionEffectType.getByName(parts[1]),util.getIntNumber(parts[2])*20,util.getIntNumber(parts[3]));
     	effect = "PotionEffect";
     }
     
-    //´¦ÀíĞÅÏ¢Ğ§¹û
+    //å¤„ç†ä¿¡æ¯æ•ˆæœ
     private void setMessage(String[] parts) {
     	msg = parts[1];
     	effect = "Message";
     }
     
-    //´¦ÀíÁ£×ÓÓëÉùÒôĞ§¹û
+    //å¤„ç†ç²’å­ä¸å£°éŸ³æ•ˆæœ
     private void setEffect(String[] parts) {
     	
     	if(parts[0].equalsIgnoreCase("ParticleEffect")) {
@@ -84,37 +84,31 @@ public class SkillEffect {   //¼¼ÄÜÊµ¼ÊĞ§¹û
     }
     
     /**
-     * Ö´ĞĞ¼¼ÄÜĞ§¹û
-     * @param entities Ö´ĞĞµÄÄ¿±ê
-     * @param user Ê¹ÓÃÕß
-     * @param duration ³ÖĞøÊ±¼ä£¨·Ç±ØÒª£©
+     * æ‰§è¡ŒæŠ€èƒ½æ•ˆæœ
+     * @param entities æ‰§è¡Œçš„ç›®æ ‡
+     * @param user ä½¿ç”¨è€…
+     * @param duration æŒç»­æ—¶é—´ï¼ˆéå¿…è¦ï¼‰
      */
     public void run(List<LivingEntity> entities , Player user , int duration) {
     	
     	SkillUtil skillutil = new SkillUtil();
     	
-    	//Ò©Ë®Ğ§¹û
+    	//è¯æ°´æ•ˆæœ
     	if(effect.equalsIgnoreCase("PotionEffect")) {
     		for(LivingEntity entity : entities) {
     			entity.addPotionEffect(potioneffect);
     		}
-    	}//ÉËº¦Ğ§¹û
+    	}//ä¼¤å®³æ•ˆæœ
     	else if(effect.equalsIgnoreCase("Damage")) {
     		for(LivingEntity entity : entities) {
     			entity.damage(amount);
     		}
-    	}//ÏÔĞÎ
-    	else if(effect.equalsIgnoreCase("showEntity")) {
-    		for(LivingEntity entity : entities) {
-    			entity.setGlowing(true);
-    			//do
-    		}
-    	}//×Å»ğ
+    	}//ç€ç«
     	else if(effect.equalsIgnoreCase("Fire")) {
     		for(LivingEntity entity : entities) {
     			entity.setFireTicks((int) amount);
     		}
-    	}//ÉÁµç
+    	}//é—ªç”µ
     	else if(effect.equalsIgnoreCase("Lightning")) {
     		for(LivingEntity entity : entities) {
     			
@@ -123,7 +117,7 @@ public class SkillEffect {   //¼¼ÄÜÊµ¼ÊĞ§¹û
     			}
 
     		}
-    	}//Éä¼ı
+    	}//å°„ç®­
     	else if(effect.equalsIgnoreCase("ShootArrows")) {
     		for(LivingEntity entity : entities) {
     			Location loc = entity.getEyeLocation();
@@ -131,7 +125,7 @@ public class SkillEffect {   //¼¼ÄÜÊµ¼ÊĞ§¹û
         		entity.getWorld().spawnArrow(loc, loc.getDirection(), (float) amount, 12);
 
     		}
-    	}//ÑªÁ¿Ç¿ĞĞµ÷Õû
+    	}//è¡€é‡å¼ºè¡Œè°ƒæ•´
     	else if(effect.equalsIgnoreCase("HealthSet")) {
     		
     		for(LivingEntity entity : entities) {
@@ -146,7 +140,7 @@ public class SkillEffect {   //¼¼ÄÜÊµ¼ÊĞ§¹û
     			
     		}
     		
-    	}//Ç¿ĞĞµ÷Õû¹¥»÷Á¦
+    	}//å¼ºè¡Œè°ƒæ•´æ”»å‡»åŠ›
     	else if(effect.equalsIgnoreCase("DamageSet")) {
     		for(LivingEntity entity : entities) {
     			
@@ -157,47 +151,47 @@ public class SkillEffect {   //¼¼ÄÜÊµ¼ÊĞ§¹û
     			}
     			
     		}
-    	}//»÷ÍË
+    	}//å‡»é€€
     	else if(effect.equalsIgnoreCase("PushBack")) {
     		for(LivingEntity entity : entities) {
     			skillutil.pushBack(user, entity, amount);
     		}
-    	}//À­½ü
+    	}//æ‹‰è¿‘
     	else if(effect.equalsIgnoreCase("Pull")) {
     		for(LivingEntity entity : entities) {
     			skillutil.pull(user, entity, amount);
     		}
-    	}//³å·æ
+    	}//å†²é”‹
     	else if(effect.equalsIgnoreCase("Charge")) {
     		for(LivingEntity entity : entities) {
     			skillutil.charge(entity, amount);
     		}
-    	}//·¢ËÍĞÅÏ¢
+    	}//å‘é€ä¿¡æ¯
     	else if(effect.equalsIgnoreCase("Message")) {
     		for(LivingEntity entity : entities) {
     			entity.sendMessage(msg);
     		}
-    	}//Á£×ÓĞ§¹û
+    	}//ç²’å­æ•ˆæœ
     	else if(effect.equalsIgnoreCase("ParticleEffect")) {
     		for(LivingEntity entity : entities) {
-    			particleeffect.playNormal(entity.getWorld(), entity.getLocation());
+    			particleeffect.playNormal(entity.getWorld(), entity.getEyeLocation());
     		}
-    	}//ÉùÒôĞ§¹û
+    	}//å£°éŸ³æ•ˆæœ
     	else if(effect.equalsIgnoreCase("SoundEffect")) {
     		for(LivingEntity entity : entities) {
     			soundeffect.play(entity.getWorld(), entity.getLocation());
     		}
-    	}//»÷·É
+    	}//å‡»é£
     	else if(effect.equalsIgnoreCase("Jump")) {
     		for(LivingEntity entity : entities) {
     			skillutil.jump(entity, amount);
     		}
-    	}//±¬Õ¨
+    	}//çˆ†ç‚¸
     	else if(effect.equalsIgnoreCase("Explosion")) {
     		for(LivingEntity entity : entities) {
     			entity.getWorld().createExplosion(entity.getLocation(), (float) amount);
     		}
-    	}//Ç¿ĞĞµ÷Õû[ËùÊÜ]µÄÉËº¦
+    	}//å¼ºè¡Œè°ƒæ•´[æ‰€å—]çš„ä¼¤å®³
     	else if(effect.equalsIgnoreCase("DamagedSet")) {
     		for(LivingEntity entity : entities) {
     			

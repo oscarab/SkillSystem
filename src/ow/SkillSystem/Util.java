@@ -53,10 +53,10 @@ public class Util {
 	  }
   }
   
-  /** ÎªÒ»¸öÍæ¼Ò´´½¨Ò»¸ö¼¼ÄÜ°´Å¥°ó¶¨Ò³Ãæ
+  /** ä¸ºä¸€ä¸ªç©å®¶åˆ›å»ºä¸€ä¸ªæŠ€èƒ½æŒ‰é’®ç»‘å®šé¡µé¢
    */
   public void createInventory(Player p) {
-	  Inventory inv = Bukkit.createInventory(p, 54 , "[¼¼ÄÜÏµÍ³]°´¼ü°ó¶¨");
+	  Inventory inv = Bukkit.createInventory(p, 54 , "[æŠ€èƒ½ç³»ç»Ÿ]æŒ‰é”®ç»‘å®š");
 	  
 	  for(ItemStack item : getItems(p)) {
 		  inv.addItem(item);
@@ -66,7 +66,7 @@ public class Util {
   }
   
   /**
-   * »ñÈ¡¼¼ÄÜ°ó¶¨½çÃæµÄÎïÆ·°´Å¥
+   * è·å–æŠ€èƒ½ç»‘å®šç•Œé¢çš„ç‰©å“æŒ‰é’®
    */
   private List<ItemStack> getItems(Player player){
 	  List<ItemStack> items = new ArrayList<>();
@@ -82,13 +82,13 @@ public class Util {
 		  SPlayer p = OnlineData.getSPlayer(player);
 		  
 		  meta.setDisplayName(skill.getName());
-		  lores.add("¡ìf×ó¼üµ¥»÷¿ªÊ¼°ó¶¨£¬ÓÒ¼üµ¥»÷È¡Ïû°ó¶¨");
+		  lores.add("Â§få·¦é”®å•å‡»å¼€å§‹ç»‘å®šï¼Œå³é”®å•å‡»å–æ¶ˆç»‘å®š");
 		  
 		  int key = p.getKeyBoardSkill(skill);
 		  if(key != -1) {
-			  lores.add("¡ìf°ó¶¨°´¼ü£º ¡ì4¡ìl"+getKeyChar(key));
+			  lores.add("Â§fç»‘å®šæŒ‰é”®ï¼š Â§4Â§l"+getKeyChar(key));
 		  }else {
-			  lores.add("¡ì4C¡ìl°ó¶¨");
+			  lores.add("Â§4Â§læœªç»‘å®š");
 		  }
 		  
 		  meta.setLore(lores);
@@ -100,9 +100,9 @@ public class Util {
 	  return items;
   }
   
-  /**ÊÇ·ñÊÇ¿É³ÖĞøµÄ¼¼ÄÜÖ´ĞĞ
-   * Èç¹ûÊÇ¹¥»÷»ò±»¹¥»÷µÄÌõ¼şÏÂµÄ£¬¿ÉÒÔ³ÖĞø
-   * Èç¹ûÊÇÉËº¦µ÷ÕûµÄĞ§¹û£¬¿ÉÒÔ³ÖĞø
+  /**æ˜¯å¦æ˜¯å¯æŒç»­çš„æŠ€èƒ½æ‰§è¡Œ
+   * å¦‚æœæ˜¯æ”»å‡»æˆ–è¢«æ”»å‡»çš„æ¡ä»¶ä¸‹çš„ï¼Œå¯ä»¥æŒç»­
+   * å¦‚æœæ˜¯ä¼¤å®³è°ƒæ•´çš„æ•ˆæœï¼Œå¯ä»¥æŒç»­
    */
   public boolean canHasDuration(SkillCondition condition , SkillTarget target , SkillEffect effect) {
 	  if(condition.getCondition().contains("Every")) {
@@ -115,7 +115,7 @@ public class Util {
   }
   
   /**
-   * Ê¹Íæ¼ÒÖ´ĞĞ¼¼ÄÜ
+   * ä½¿ç©å®¶æ‰§è¡ŒæŠ€èƒ½
    */
   public void runSkill(SPlayer player , Skill skill) {
 	  Bukkit.getScheduler().runTask(Main.plugin, new Runnable() {
@@ -130,7 +130,7 @@ public class Util {
 	  });
   }
   
-  //»ñÈ¡Êı×ÖËù¶ÔÓ¦µÄ¼üÅÌ×Ö·û
+  //è·å–æ•°å­—æ‰€å¯¹åº”çš„é”®ç›˜å­—ç¬¦
   private String getKeyChar(int key) {
 	  switch(key) {
 	  case 1: return "ESC";
@@ -180,7 +180,7 @@ public class Util {
 	  case 39: return ";";
 	  case 40: return "'";
 	  case 41: return "`";
-	  case 42: return "Shift(×ó)";
+	  case 42: return "Shift(å·¦)";
 	  case 43: return "\\";
 	  
 	  case 44: return "Z";
@@ -194,11 +194,11 @@ public class Util {
 	  case 51: return ",";
 	  case 52: return ".";
 	  case 53: return "/";
-	  case 54: return "Shift(ÓÒ)";
+	  case 54: return "Shift(å³)";
 	  case 56: return "Alt";
-	  case 57: return "¿Õ¸ñ";
+	  case 57: return "ç©ºæ ¼";
 	  
-	  default : return "Î´Öª";
+	  default : return "æœªçŸ¥";
 	  }
   }
 }

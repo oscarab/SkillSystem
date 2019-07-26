@@ -13,10 +13,10 @@ import ow.SkillSystem.data.SPlayer;
 
 public class SkillSingleExecution {     
 	/*
-	 * ¼¼ÄÜµ¥ÌõÖ´ĞĞÊ¾Àı
-	 * ¸ñÊ½£º  Ìõ¼ş/Ä¿±ê/Ğ§¹û/Ö´ĞĞ³ÖĞøÊ±¼ä
+	 * æŠ€èƒ½å•æ¡æ‰§è¡Œç¤ºä¾‹
+	 * æ ¼å¼ï¼š  æ¡ä»¶/ç›®æ ‡/æ•ˆæœ/æ‰§è¡ŒæŒç»­æ—¶é—´
 	 * None/Self/PotionEffect:Speed:20:1/0
-	 * ÎŞÌõ¼ş¸ø×Ô¼º¼ÓÉÏËÙ¶ÈÒ©Ë®Ğ§¹ûµÈ¼¶1³ÖĞø20Ãë
+	 * æ— æ¡ä»¶ç»™è‡ªå·±åŠ ä¸Šé€Ÿåº¦è¯æ°´æ•ˆæœç­‰çº§1æŒç»­20ç§’
 	 */
   private SkillCondition condition;
   private SkillTarget target;
@@ -31,7 +31,7 @@ public class SkillSingleExecution {
 	  effect = new SkillEffect(args[2]);
 	  duration = Main.util.getIntNumber(args[3]);
 	  
-	  checkDuration();        //¼ì²éÊÇ·ñÊÇ¿É³ÖĞøµÄ¼¼ÄÜÖ´ĞĞ
+	  checkDuration();        //æ£€æŸ¥æ˜¯å¦æ˜¯å¯æŒç»­çš„æŠ€èƒ½æ‰§è¡Œ
   }
   
   private void checkDuration() {
@@ -40,7 +40,7 @@ public class SkillSingleExecution {
 	  }
   }
   
-  //ÉèÖÃ¼¼ÄÜÌõµÄÄ¿±ê   ÀıÈç  RaduisEntity:3.0
+  //è®¾ç½®æŠ€èƒ½æ¡çš„ç›®æ ‡   ä¾‹å¦‚  RaduisEntity:3.0
   private void setTarget(String part) {
 	  if(part.contains(":")) {
 		  radius = Main.util.getDoubleNumber(part);
@@ -54,7 +54,7 @@ public class SkillSingleExecution {
 	  return condition;
   }
   
-  //»ñÈ¡¼¼ÄÜÌõÊÍ·ÅµÄÄ¿±ê
+  //è·å–æŠ€èƒ½æ¡é‡Šæ”¾çš„ç›®æ ‡
   public List<LivingEntity> getTarget(Player self) {
 	  List<LivingEntity> entities = new ArrayList<>();
 	  
@@ -78,24 +78,24 @@ public class SkillSingleExecution {
   }
   
   /**
-   * ¿ªÊ¼Ö´ĞĞ¼¼ÄÜ
-   * @param self Ö´ĞĞ¼¼ÄÜÌõµÄÍæ¼Ò
+   * å¼€å§‹æ‰§è¡ŒæŠ€èƒ½
+   * @param self æ‰§è¡ŒæŠ€èƒ½æ¡çš„ç©å®¶
    */
   public void run(Player self) {
-	  //¼¼ÄÜÌõÖĞµÄÄ¿±ê
+	  //æŠ€èƒ½æ¡ä¸­çš„ç›®æ ‡
 	  List<LivingEntity> entities = getTarget(self);
-	  //×¼ĞÄËùÖ¸Ä¿±ê
+	  //å‡†å¿ƒæ‰€æŒ‡ç›®æ ‡
 	  LivingEntity entity = new SkillUtil().getTargetEntity(self);
 	  
-	  //ÅĞ¶ÏÊÇ·ñÂú×ãÂíÉÏÖ´ĞĞÌõ¼ş
+	  //åˆ¤æ–­æ˜¯å¦æ»¡è¶³é©¬ä¸Šæ‰§è¡Œæ¡ä»¶
 	  if( entities.size() > 0 && condition.getCondition().contains("Target") && entity != null && condition.check(self, entity)) {
-		  //¸ù¾İÄ¿±êÀ´Ö´ĞĞĞ§¹û
+		  //æ ¹æ®ç›®æ ‡æ¥æ‰§è¡Œæ•ˆæœ
 		  effect.run(entities , self , duration);
 		  
 	  }else if(entities.size() > 0 && condition.check(self, self)) {
 		  effect.run(entities , self , duration);
 		  
-	  }//Èç¹ûÊÇ¹¥»÷»ò»÷É±Ìõ¼şµÄ£¬Ó¦¸Ã±ê¼Ç
+	  }//å¦‚æœæ˜¯æ”»å‡»æˆ–å‡»æ€æ¡ä»¶çš„ï¼Œåº”è¯¥æ ‡è®°
 	  else if(condition.isNeedSign()) {
 		  SPlayer player = OnlineData.getSPlayer(self);
 
@@ -104,7 +104,7 @@ public class SkillSingleExecution {
 	  }
   }
   
-  //Ç¿ĞĞÖ´ĞĞ£¬ÎŞÊÓÌõ¼ş
+  //å¼ºè¡Œæ‰§è¡Œï¼Œæ— è§†æ¡ä»¶
   public void runWithoutCondition(Player self) {
 	  List<LivingEntity> entities = getTarget(self);
 	  
