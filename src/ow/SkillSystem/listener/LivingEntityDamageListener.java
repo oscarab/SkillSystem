@@ -49,7 +49,6 @@ public class LivingEntityDamageListener implements Listener{
 			
 		}
 		
-		event.getDamager().sendMessage("你造成了"+event.getDamage()+"点伤害");
 		
 	}
 	

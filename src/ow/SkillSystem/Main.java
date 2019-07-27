@@ -122,7 +122,7 @@ public class Main extends JavaPlugin{
 					sender.sendMessage("该玩家不在线");
 				}
 				
-			}else if(sender instanceof Player && args.length == 0) {
+			}else if(sender instanceof Player && args.length == 0 && Bukkit.getPluginManager().getPlugin("VexView") != null) {
 				Player player = (Player) sender;
 				util.createInventory(player);
 			}

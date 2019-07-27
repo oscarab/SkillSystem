@@ -1,8 +1,7 @@
 name: SkillSystem
 author: Oscar_Wen
-version: 1.0
+version: 1.2
 main: ow.SkillSystem.Main
 softdepend: [VexView]
 commands:
   skillsystem:
-  skills:
