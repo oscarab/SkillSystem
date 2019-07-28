@@ -16,6 +16,7 @@ public class SkillCondition {
     private String condition;
     //有关数值
     private int amount;
+    private String examount = "0";
     //有关物品
     private ItemStack item;
     //等于0，大于2，大于等于1，小于等于-1，小于-2
@@ -42,7 +43,7 @@ public class SkillCondition {
     		condition = conditions[3];
     	}
 		sign = util.getSign(part);
-		amount = util.getIntNumber(part);
+		examount = part;
     }
     
     //处理关于物品的条件
@@ -50,7 +51,7 @@ public class SkillCondition {
     	String[] parts = part.split(":");
     	condition = parts[0];
     	item = Main.items.get(parts[1]);
-    	amount = Integer.parseInt(parts[2]);
+    	examount = parts[2];
     }
     
     //处理关于无附加属性的条件
@@ -75,6 +76,9 @@ public class SkillCondition {
     
     //检查是否满足条件
     public boolean check(Player self,LivingEntity target) {
+    	//处理数值算式
+    	amount = Main.util.getIntNumber(examount, self);
+    	
     	//检测血量
     	if(condition.contains("Health")) {
         	double health = condition.contains("Self")?self.getHealth():target.getHealth();

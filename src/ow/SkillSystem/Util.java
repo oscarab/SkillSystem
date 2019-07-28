@@ -2,8 +2,10 @@ package ow.SkillSystem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import ow.SkillSystem.data.OnlineData;
 import ow.SkillSystem.data.SPlayer;
 import ow.SkillSystem.skills.Skill;
@@ -21,22 +24,35 @@ import ow.SkillSystem.skills.SkillTarget;
 
 public class Util {
 	
-  public double getDoubleNumber(String part){
-	  Pattern pattern = Pattern.compile("[+-]?\\d+(\\.\\d*)?");
-	  Matcher matcher = pattern.matcher(part);
-	  if(matcher.find()) {
-		  return Double.parseDouble(matcher.group());
-	  }
+  public double getDoubleNumber(String part ,Player p){
+	  ScriptEngine se = new ScriptEngineManager().getEngineByName("js");
+	  
+	  part = replaceAPI(part , p);
+
+	  try {
+		return Double.parseDouble(se.eval(part).toString());
+	} catch (ScriptException e) {
+		e.printStackTrace();
+		Bukkit.getConsoleSender().sendMessage("§4在处理包含算式的技能条中遭遇了错误，请及时检查配置文件！");
+		Bukkit.getConsoleSender().sendMessage("§4具体错误处：§f"+part);
+	}
 	  return 0;
+	 
   }
   
-  public int getIntNumber(String part) {
-	  Pattern pattern = Pattern.compile("\\d+");
-	  Matcher matcher = pattern.matcher(part);
-	  if(matcher.find()) {
-		  return Integer.parseInt(matcher.group());
-	  }
+  public int getIntNumber(String part , Player p) {
+	  ScriptEngine se = new ScriptEngineManager().getEngineByName("js");
+	  part = replaceAPI(part , p);
+	  
+	  try {
+		return (int) se.eval(part);
+	} catch (ScriptException e) {
+		e.printStackTrace();
+		Bukkit.getConsoleSender().sendMessage("§4在处理包含算式的技能条中遭遇了错误，请及时检查配置文件！");
+		Bukkit.getConsoleSender().sendMessage("§4具体错误处：§f"+part);
+	}
 	  return 0;
+
   }
   
   public int getSign(String part) {
@@ -51,6 +67,19 @@ public class Util {
 	  }else {
 		  return 0;
 	  }
+  }
+  
+  /**
+   * 应用PlaceholderAPI作为变量前置
+   * @param part 需要进行替换的字符串
+   * @param p 对应的玩家
+   * @return 返回替换好的字符串
+   */
+  public String replaceAPI(String part ,Player p) {
+	  if(Main.PaPi) {
+		return PlaceholderAPI.setPlaceholders(p, part);
+	  }
+	  return part;
   }
   
   /** 为一个玩家创建一个技能按钮绑定页面

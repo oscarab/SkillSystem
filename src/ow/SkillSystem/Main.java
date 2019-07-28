@@ -35,9 +35,20 @@ public class Main extends JavaPlugin{
 	//是否开放键盘数字键触发技能
 	public static boolean isKeyBoard = true;
 	
+	public static boolean PaPi = false;
+	
 	public void onEnable() {
 		plugin = this;
 		util = new Util();
+		
+		//检测前置插件
+		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+			getLogger().info("检测到PlaceholderAPI存在，可以使用相关变量！");
+			PaPi = true;
+		}
+		if(Bukkit.getPluginManager().isPluginEnabled("VexView")) {
+			getLogger().info("检测到VexView存在，可以使用键盘触发技能！");
+		}
 		
 		try {
 			handle = new ConfigHandle();
@@ -50,7 +61,7 @@ public class Main extends JavaPlugin{
 		}
 		
 		//初始化现有玩家
-		initPlayer();
+		initPlayers();
 		getLogger().info("初始化完成现有玩家！");
 		
 		runThread();
@@ -61,10 +72,11 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new LivingEntityDamageListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		
-		getLogger().info("技能系统启动完成！");
+		getLogger().info("技能系统启动完成！当前版本:v1.3");
 	}
 	
-	private void initPlayer() {
+	//初始化当前服务器中的玩家数据
+	private void initPlayers() {
 		Iterator<? extends Player> itn = Bukkit.getServer().getOnlinePlayers().iterator();
 		
 		while(itn.hasNext()) {
@@ -81,10 +93,9 @@ public class Main extends JavaPlugin{
 		}
 		
 	}
-
-	public void onDisable() {
-		getLogger().info("技能系统正在保存数据...");
-		
+	
+	//保存当前服务器中的玩家数据
+	private void savePlayers() {
 		Iterator<? extends Player> itn = Bukkit.getServer().getOnlinePlayers().iterator();
 		
 		while(itn.hasNext()) {
@@ -93,6 +104,12 @@ public class Main extends JavaPlugin{
 			
 			player.saveKeyBoard();
 		}
+	}
+
+	public void onDisable() {
+		getLogger().info("技能系统正在保存数据...");
+		
+		savePlayers();
 		
 	}
 	
@@ -123,8 +140,28 @@ public class Main extends JavaPlugin{
 				}
 				
 			}else if(sender instanceof Player && args.length == 0 && Bukkit.getPluginManager().getPlugin("VexView") != null) {
+				
 				Player player = (Player) sender;
 				util.createInventory(player);
+				
+			}else if(sender.isOp() && args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+				sender.sendMessage("[SkillSystem]开始重载技能系统！");
+				skillsdata.clear();
+				skills.clear();
+				items.clear();
+
+				try {
+					handle = new ConfigHandle();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				handle.loadItems();
+				handle.loadSkills();
+				
+				savePlayers();
+				OnlineData.players.clear();
+				initPlayers();
+				sender.sendMessage("[SkillSystem]重载技能系统完成！");
 			}
 			
 		}

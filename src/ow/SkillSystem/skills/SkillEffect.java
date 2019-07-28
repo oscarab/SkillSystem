@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import ow.SkillSystem.Util;
+import ow.SkillSystem.Main;
 import ow.SkillSystem.SpecialEffects.ParticleEffect;
 import ow.SkillSystem.SpecialEffects.SoundEffect;
 import ow.SkillSystem.data.OnlineData;
@@ -21,9 +21,19 @@ public class SkillEffect {   //技能实际效果
     "Pull","PushBack","Message","ParticleEffect","SoundEffect",
     "Jump","Explosion","DamagedSet","Stop"};
     private String effect;
-    private double amount;
+    
+    //半成品的数字，尚未进行处理，仍为算式形式
+    private String examount = "0";
+    
+    //冷却未完成的提示语
     private String msg;
+    
+    //预处理药水效果
+    private String peduration = "0";
+    private String peamplifier = "0";
+    private PotionEffectType petype;
     private PotionEffect potioneffect;
+    
     private ParticleEffect particleeffect;
     private SoundEffect soundeffect;
     
@@ -45,15 +55,17 @@ public class SkillEffect {   //技能实际效果
      * Fire Pull PushBack ShootArrows Jump
      */
     private void setAboutNumber(String[] parts) {
-    	Util util = new Util();
-    	amount = util.getDoubleNumber(parts[1]);
+    	examount = parts[1];
     	effect = parts[0];
     }
     
     //处理药水效果
     private void setPotionEffect(String[] parts) {
-    	Util util = new Util();
-    	potioneffect = new PotionEffect(PotionEffectType.getByName(parts[1]),util.getIntNumber(parts[2])*20,util.getIntNumber(parts[3]));
+
+    	petype = PotionEffectType.getByName(parts[1]);
+    	peduration = parts[2];
+    	peamplifier = parts[3];
+
     	effect = "PotionEffect";
     }
     
@@ -92,9 +104,12 @@ public class SkillEffect {   //技能实际效果
     public void run(List<LivingEntity> entities , Player user , int duration) {
     	
     	SkillUtil skillutil = new SkillUtil();
+    	//将未处理的算式进行处理
+    	double amount = Main.util.getDoubleNumber(examount, user);
     	
     	//药水效果
     	if(effect.equalsIgnoreCase("PotionEffect")) {
+    		potioneffect = new PotionEffect(petype,Main.util.getIntNumber(peduration, user),Main.util.getIntNumber(peamplifier, user));
     		for(LivingEntity entity : entities) {
     			entity.addPotionEffect(potioneffect);
     		}

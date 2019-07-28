@@ -14,22 +14,27 @@ import ow.SkillSystem.data.SPlayer;
 public class SkillSingleExecution {     
 	/*
 	 * 技能单条执行示例
-	 * 格式：  条件/目标/效果/执行持续时间
-	 * None/Self/PotionEffect:Speed:20:1/0
+	 * 格式：  条件#目标#效果#执行持续时间
+	 * None#Self#PotionEffect:Speed:20:1#0
 	 * 无条件给自己加上速度药水效果等级1持续20秒
 	 */
   private SkillCondition condition;
   private SkillTarget target;
-  private double radius;
+  
+  //半成品范围数值 ，尚未处理
+  private String exradius = "0";
+  
   private SkillEffect effect;
-  private int duration = -1;
+  
+  private int duration = 0;
+  private String exduration = "0";
   
   public SkillSingleExecution(String arg) {
-	  String[] args = arg.split("/");
+	  String[] args = arg.split("#");
 	  condition = new SkillCondition(args[0]);
 	  setTarget(args[1]);
 	  effect = new SkillEffect(args[2]);
-	  duration = Main.util.getIntNumber(args[3]);
+	  exduration = args[3];
 	  
 	  checkDuration();        //检查是否是可持续的技能执行
   }
@@ -43,7 +48,7 @@ public class SkillSingleExecution {
   //设置技能条的目标   例如  RaduisEntity:3.0
   private void setTarget(String part) {
 	  if(part.contains(":")) {
-		  radius = Main.util.getDoubleNumber(part);
+		  exradius = part.split(":")[1];
 		  target = SkillTarget.valueOf(part.split(":")[0]);
 	  }else {
 		  target = SkillTarget.valueOf(part);
@@ -62,6 +67,7 @@ public class SkillSingleExecution {
 		  entities.add(self);
 	  }else if(target.equals(SkillTarget.RaduisEntity)) {
 		  
+		  double radius = Main.util.getDoubleNumber(exradius, self);
 		  for(Entity entity : self.getNearbyEntities(radius, radius, radius)) {
 			  if(entity instanceof LivingEntity) {
 				  entities.add((LivingEntity) entity);
@@ -86,6 +92,7 @@ public class SkillSingleExecution {
 	  List<LivingEntity> entities = getTarget(self);
 	  //准心所指目标
 	  LivingEntity entity = new SkillUtil().getTargetEntity(self);
+	  duration = Main.util.getIntNumber(exduration, self);
 	  
 	  //判断是否满足马上执行条件
 	  if( entities.size() > 0 && condition.getCondition().contains("Target") && entity != null && condition.check(self, entity)) {
