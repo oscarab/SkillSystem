@@ -151,7 +151,7 @@ public class SPlayer {
 		   if(time > 0) {
 			   executions.put(arg, time);
 		   }else {
-			   executions.remove(arg);
+			   it.remove();
 		   }
 		   
 	   }
@@ -169,7 +169,7 @@ public class SPlayer {
 		   if(time > 0) {
 			   skills.put(arg, time);
 		   }else {
-			   skills.remove(arg);
+			   it.remove();
 		   }
 	   }
    }

@@ -162,6 +162,8 @@ public class Main extends JavaPlugin{
 				OnlineData.players.clear();
 				initPlayers();
 				sender.sendMessage("[SkillSystem]重载技能系统完成！");
+			}else {
+				sender.sendMessage("未知指令");
 			}
 			
 		}

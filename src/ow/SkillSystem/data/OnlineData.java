@@ -80,7 +80,7 @@ public class OnlineData {
 			int time = Integer.parseInt(parts[1]) - 1;
 			
 			if(time == 0) {
-				damageset.remove(entity);
+				it.remove();
 			}else {
 				damageset.put(entity, ds+"/"+time);
 			}
@@ -99,7 +99,7 @@ public class OnlineData {
 			int time = Integer.parseInt(parts[1]) - 1;
 			
 			if(time == 0) {
-				damagedset.remove(entity);
+				it.remove();
 			}else {
 				damagedset.put(entity, ds+"/"+time);
 			}

@@ -2,10 +2,13 @@ package ow.SkillSystem.listener;
 
 import java.io.IOException;
 
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -40,25 +43,29 @@ public class PlayerListener implements Listener{
 		OnlineData.players.remove(p);
 	}
 	
-	@EventHandler
+	//监控玩家的攻击行为
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onDamage(EntityDamageByEntityEvent event) {
 		//让玩家执行在时间内的技能条
-		if(event.getDamager() instanceof Player) {
+		if(event.getDamager() instanceof Player && event.getEntity() instanceof LivingEntity) {
 			Player p = (Player) event.getDamager();
 			SPlayer player = OnlineData.getSPlayer(p);
 			
-			player.runExecution(getAttackType(event));
+			player.runExecution("ATTACK");
 		}
 		
 	}
 	
-	//返回伤害类型，击杀或攻击
-	String getAttackType(EntityDamageByEntityEvent event) {
-		if(event.getEntity().isDead()) {
-			return "KILL";
-		}else {
-			return "ATTACK";
-		}
+	//监控玩家的击杀行为
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onKill(EntityDeathEvent event) {
+		LivingEntity entity = event.getEntity();
+		Player p = entity.getKiller();
+		
+		if(p == null) return;
+		SPlayer player = OnlineData.getSPlayer(p);
+		
+		player.runExecution("KILL");
 	}
 
 }
