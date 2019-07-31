@@ -111,13 +111,19 @@ public class Util {
 		  SPlayer p = OnlineData.getSPlayer(player);
 		  
 		  meta.setDisplayName(skill.getName());
-		  lores.add("§f左键单击开始绑定，右键单击取消绑定");
+		  lores.add("§f左键单击开始绑定"+(Main.VexView ? "，右键单击取消绑定":""));
 		  
 		  int key = p.getKeyBoardSkill(skill);
 		  if(key != -1) {
 			  lores.add("§f绑定按键： §4§l"+getKeyChar(key));
 		  }else {
-			  lores.add("§4§l未绑定");
+			  
+			  if(Main.VexView) {
+				  lores.add("§4§l未绑定");
+			  }else {
+				  lores.add(" ");
+			  }
+			  
 		  }
 		  
 		  meta.setLore(lores);

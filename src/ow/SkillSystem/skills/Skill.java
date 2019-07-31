@@ -11,15 +11,17 @@ public class Skill {
   private boolean needPermission = true;
   private String message;
   private boolean canKey = false;    //能否用按键触发
+  private List<String> worlds = new ArrayList<>();      //禁止释放的世界
   
   private List<SkillSingleExecution> executions = new ArrayList<>();
 
-  public Skill(String name , int cooldown , boolean np , String msg ,boolean cank) {
+  public Skill(String name , int cooldown , boolean np , String msg ,boolean cank ,List<String> worlds) {
 	  this.name = name;
 	  this.cooldown = cooldown;
 	  needPermission = np;
 	  message = msg;
 	  canKey = cank;
+	  this.worlds = worlds;
   }
   
   //导入单条技能执行
@@ -50,6 +52,10 @@ public class Skill {
   
   public boolean getIsNeedPermission() {
 	  return needPermission;
+  }
+  
+  public List<String> getBanWorlds(){
+	  return worlds;
   }
   
   /**

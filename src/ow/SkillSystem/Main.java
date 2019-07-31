@@ -36,6 +36,7 @@ public class Main extends JavaPlugin{
 	public static boolean isKeyBoard = true;
 	
 	public static boolean PaPi = false;
+	public static boolean VexView = false;
 	
 	public void onEnable() {
 		plugin = this;
@@ -48,6 +49,7 @@ public class Main extends JavaPlugin{
 		}
 		if(Bukkit.getPluginManager().isPluginEnabled("VexView")) {
 			getLogger().info("检测到VexView存在，可以使用键盘触发技能！");
+			VexView = true;
 		}
 		
 		try {
@@ -68,11 +70,12 @@ public class Main extends JavaPlugin{
 		
 		//加载监听器
 		Bukkit.getPluginManager().registerEvents(new ItemUse() , this);
-		Bukkit.getPluginManager().registerEvents(new KeyboardUse(), this);
+		if(VexView) {Bukkit.getPluginManager().registerEvents(new KeyboardUse(), this);}
 		Bukkit.getPluginManager().registerEvents(new LivingEntityDamageListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
-		getLogger().info("技能系统启动完成！当前版本:v1.3");
+		getLogger().info("技能系统启动完成！当前版本:v1.4");
 	}
 	
 	//初始化当前服务器中的玩家数据
@@ -139,7 +142,7 @@ public class Main extends JavaPlugin{
 					sender.sendMessage("该玩家不在线");
 				}
 				
-			}else if(sender instanceof Player && args.length == 0 && Bukkit.getPluginManager().getPlugin("VexView") != null) {
+			}else if(sender instanceof Player && args.length == 0) {
 				
 				Player player = (Player) sender;
 				util.createInventory(player);

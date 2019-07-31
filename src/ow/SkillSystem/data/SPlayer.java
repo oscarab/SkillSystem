@@ -1,8 +1,11 @@
 package ow.SkillSystem.data;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 
 import ow.SkillSystem.Main;
@@ -87,7 +90,12 @@ public class SPlayer {
    public void setSkill(Skill skill) {
 	   
 	   if(skill.getIsNeedPermission() && !player.hasPermission("SkillSystem."+skill.getName())) {
-		   //do
+		   player.sendMessage("§4你没有使用此技能的权限！");
+		   return;
+	   }
+	   
+	   if(skill.getBanWorlds() != null && skill.getBanWorlds().contains(player.getWorld().getName())) {
+		   player.sendMessage("§4本世界你不能使用这个技能！");
 		   return;
 	   }
 	   

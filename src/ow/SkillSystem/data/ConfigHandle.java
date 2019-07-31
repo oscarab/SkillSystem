@@ -48,8 +48,9 @@ public class ConfigHandle {
 			boolean np = skillsyml.getBoolean(key+".needPermission");
 			boolean ck = skillsyml.getBoolean(key+".cankeyBoard");
 			String msg = skillsyml.getString(key+".message");
+			List<String> worlds = skillsyml.getStringList(key+".banWorlds");
 			
-			Skill skill = new Skill(key , cooldown ,np , msg , ck);
+			Skill skill = new Skill(key , cooldown ,np , msg , ck , worlds);
 			skill.setExecution(skillsyml.getStringList(key+".execution"));
 			Main.skillsdata.put(key,skill);
 			Main.skills.add(skill);

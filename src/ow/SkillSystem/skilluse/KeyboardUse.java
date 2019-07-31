@@ -3,11 +3,6 @@ package ow.SkillSystem.skilluse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
 
 import lk.vexview.event.KeyBoardPressEvent;
 import ow.SkillSystem.Main;
@@ -47,36 +42,6 @@ public class KeyboardUse implements Listener{
 		
 	}
 	
-	//监听技能绑定方面的按下
-	@EventHandler
-	public void onClick(InventoryClickEvent event) {
-		Inventory inv = event.getClickedInventory();
-		InventoryView view = event.getView();
-		if(inv == null || view == null) { return; }
-		
-		if(view.getTitle().contains("[技能系统]按键绑定") && event.getWhoClicked() instanceof Player) {
-			
-			ItemStack item = inv.getItem(event.getSlot());
-			if(item == null || !item.getItemMeta().hasLore()) return;
-			
-			String name = item.getItemMeta().getDisplayName();
-			Player player = (Player) event.getWhoClicked();
-			
-			if(item.getItemMeta().getLore().get(1).contains("未绑定") && event.getClick().equals(ClickType.LEFT)) {
-				//左键开始绑定
-				OnlineData.playersetkey.put(player, name);
-				player.sendMessage("§f§l请按下你需要绑定的按键");
-				
-			}else if(item.getItemMeta().getLore().get(1).contains("绑定按键") && event.getClick().equals(ClickType.RIGHT)) {
-				//右键可以解除绑定
-				OnlineData.getSPlayer(player).removeKeyBoardSkill( Main.skillsdata.get(name) );
-				player.sendMessage("§f§l成功解除绑定");
-				
-			}
-			
-			player.closeInventory();
-			event.setCancelled(true);
-		}
-	}
+
 	
 }
