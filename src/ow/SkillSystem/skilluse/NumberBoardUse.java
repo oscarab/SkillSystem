@@ -112,10 +112,10 @@ public class NumberBoardUse implements Listener{
 	@EventHandler
 	public void onChangeItem(PlayerItemHeldEvent event) {
 		int slot = event.getNewSlot();
+		Player player = event.getPlayer();
 		
 		//按下数字键触发技能
-		if(slot <= 8) {
-			Player player = event.getPlayer();
+		if(slot <= 8 && !Main.VexView) {
 			ItemStack item = player.getInventory().getItem(slot);
 			 
 			 if(item !=null && isSkillItem(item)) {
@@ -128,13 +128,26 @@ public class NumberBoardUse implements Listener{
 			 }
 		}
 		
+		//在VexView开启时清除数字键触发技能的物品
+		if(Main.VexView) {
+			PlayerInventory inv = player.getInventory();
+			
+			for(int i = 0 ; i < 9 ; i++) {
+				if(inv.getItem(i) != null && (inv.getItem(i).equals(getNoSkillItem()) || isSkillItem(inv.getItem(i)))) {
+					inv.setItem(i, null);
+				}
+			}
+			
+		}
+		
 	}
 	
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent event) {
 		ItemStack item = event.getItemDrop().getItemStack();
 		//防止掉落技能方面的物品
-		if(item.equals(getNoSkillItem()) || isSkillItem(item)) {
+		if((item.equals(getNoSkillItem()) || isSkillItem(item)) && !Main.VexView) {
+			
 			event.setCancelled(true);
 		}
 	}
