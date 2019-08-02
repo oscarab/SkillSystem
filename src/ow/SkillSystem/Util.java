@@ -45,7 +45,7 @@ public class Util {
 	  part = replaceAPI(part , p);
 	  
 	  try {
-		return (int) se.eval(part);
+		return (int) Double.parseDouble(se.eval(part).toString());
 	} catch (ScriptException e) {
 		e.printStackTrace();
 		Bukkit.getConsoleSender().sendMessage("§4在处理包含算式的技能条中遭遇了错误，请及时检查配置文件！");
@@ -114,7 +114,7 @@ public class Util {
 		  lores.add("§f左键单击开始绑定"+(Main.VexView ? "，右键单击取消绑定":""));
 		  
 		  int key = p.getKeyBoardSkill(skill);
-		  if(key != -1) {
+		  if(key != -1 && Main.VexView) {
 			  lores.add("§f绑定按键： §4§l"+getKeyChar(key));
 		  }else {
 			  

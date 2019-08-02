@@ -1,5 +1,6 @@
 package ow.SkillSystem.skills;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -37,13 +38,14 @@ public class SkillCondition {
     //处理关于生命值的条件
     private void setAboutHealth(String part){
     	Util util = new Util();
-    	if(part.contains("SelHealth")) {
+    	if(part.contains("SelfHealth")) {
     		condition = conditions[0];
+    		examount = part.substring(11);
     	}else{
     		condition = conditions[3];
+    		examount = part.substring(13);
     	}
 		sign = util.getSign(part);
-		examount = part;
     }
     
     //处理关于物品的条件
