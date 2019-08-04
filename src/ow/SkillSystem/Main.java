@@ -75,7 +75,7 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
-		getLogger().info("技能系统启动完成！当前版本:v1.4.1");
+		getLogger().info("技能系统启动完成！当前版本:v1.4.2");
 	}
 	
 	//初始化当前服务器中的玩家数据
@@ -122,10 +122,12 @@ public class Main extends JavaPlugin{
 		Thread pthread = new SkillThread();
 		Thread dthread = new DamageThread();
 		Thread ddthread = new DamagedThread();
+		Thread cansy = new CancelAsynWatch();
 		
 		pthread.start();
 		dthread.start();
 		ddthread.start();
+		cansy.start();
 	}
 	
 	public boolean onCommand(CommandSender sender,Command cmd,String Label,String[] args){

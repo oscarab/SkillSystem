@@ -62,8 +62,8 @@ public class SkillUtil {
 	 * @param p 玩家
 	 * @return 若有则返回该生物，若无返回null
 	 */
-	public LivingEntity getTargetEntity(Player p) { 
-		List<Entity> entities = p.getNearbyEntities(3.0, 3.0, 3.0);
+	public LivingEntity getTargetEntity(Player p , double distance) { 
+		List<Entity> entities = p.getNearbyEntities(distance ,distance, distance);
 		for(Entity en : entities) {
 			if(en instanceof LivingEntity) {
 				LivingEntity len = (LivingEntity) en ;

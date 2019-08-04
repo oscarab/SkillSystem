@@ -19,7 +19,7 @@ public class SkillEffect {   //技能实际效果
     		"DamageSet","Damage","HealthSet",
     		"ShootArrows","Fire","Lightning",
     "Pull","PushBack","Message","ParticleEffect","SoundEffect",
-    "Jump","Explosion","DamagedSet","Stop"};
+    "Jump","Explosion","DamagedSet","Delay"};
     private String effect;
     
     //半成品的数字，尚未进行处理，仍为算式形式
@@ -86,7 +86,7 @@ public class SkillEffect {   //技能实际效果
     	}else {
     		
     		effect = "SoundEffect";
-    		soundeffect = new SoundEffect(parts[1],Float.parseFloat(parts[2]),Float.parseFloat(parts[2]));
+    		soundeffect = new SoundEffect(parts[1],Float.parseFloat(parts[2]),Float.parseFloat(parts[3]));
     	}
     	
     }
@@ -204,7 +204,8 @@ public class SkillEffect {   //技能实际效果
     	}//爆炸
     	else if(effect.equalsIgnoreCase("Explosion")) {
     		for(LivingEntity entity : entities) {
-    			entity.getWorld().createExplosion(entity.getLocation(), (float) amount);
+    			Location loc = entity.getLocation();
+    			entity.getWorld().createExplosion(loc.getX() , loc.getY() , loc.getZ() , (float) amount , false , false);
     		}
     	}//强行调整[所受]的伤害
     	else if(effect.equalsIgnoreCase("DamagedSet")) {
@@ -217,6 +218,14 @@ public class SkillEffect {   //技能实际效果
     			}
     			
     		}
+    	}
+    	//延迟
+    	else if(effect.equalsIgnoreCase("Delay")) {
+    		try {
+				Thread.sleep((long) (amount*1000));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
     	}
     	
     }

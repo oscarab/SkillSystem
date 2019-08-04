@@ -45,7 +45,7 @@ public class SkillSingleExecution {
 	  }
   }
   
-  //设置技能条的目标   例如  RaduisEntity:3.0
+  //设置技能条的目标   例如  RaduisEntity:3.0 PointEntity:3.0
   private void setTarget(String part) {
 	  if(part.contains(":")) {
 		  exradius = part.split(":")[1];
@@ -76,7 +76,8 @@ public class SkillSingleExecution {
 		  
 	  }else {
 		  SkillUtil sutil = new SkillUtil();
-		  LivingEntity entity = sutil.getTargetEntity(self);
+		  double distance = Main.util.getDoubleNumber(exradius, self);
+		  LivingEntity entity = sutil.getTargetEntity(self, distance);
 		  if(entity != null) entities.add(entity);
 	  }
 	  
@@ -91,7 +92,8 @@ public class SkillSingleExecution {
 	  //技能条中的目标
 	  List<LivingEntity> entities = getTarget(self);
 	  //准心所指目标
-	  LivingEntity entity = new SkillUtil().getTargetEntity(self);
+	  double distance = Main.util.getDoubleNumber(exradius, self);
+	  LivingEntity entity = new SkillUtil().getTargetEntity(self, distance);
 	  duration = Main.util.getIntNumber(exduration, self);
 	  
 	  //判断是否满足马上执行条件
