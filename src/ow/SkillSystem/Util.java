@@ -153,12 +153,12 @@ public class Util {
    * 使玩家执行技能
    */
   public void runSkill(SPlayer player , Skill skill) {
-	  Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, new Thread() {
+	  Bukkit.getScheduler().runTask(Main.plugin, new Thread() {
 
 		@Override
 		public void run() {
 			
-			skill.run(player.getPlayer());
+			skill.runSkill(player.getPlayer() , null);
 		
 		}
 		  

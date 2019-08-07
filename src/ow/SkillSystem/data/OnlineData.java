@@ -1,7 +1,10 @@
 package ow.SkillSystem.data;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -9,17 +12,17 @@ import org.bukkit.entity.Player;
 public class OnlineData {
 	
 	//调整打出的伤害    格式：   生物/伤害设置/持续时间  正数是增加伤害，负数是减少
-	public static HashMap<LivingEntity,String> damageset = new HashMap<>();
+	public static Map<LivingEntity,String> damageset = Collections.synchronizedMap(new HashMap<>());
 	
 	//调整所受的伤害   格式：   生物/伤害设置/持续时间      
 	//若为0则是无敌，正数是增加所受伤害，负数是减少所受伤害
-	public static HashMap<LivingEntity,String> damagedset = new HashMap<>();
+	public static Map<LivingEntity, String> damagedset = Collections.synchronizedMap(new HashMap<>());
 	
 	//玩家列表
-	public static HashMap<Player,SPlayer> players = new HashMap<>();
+	public static Map<UUID,SPlayer> players = Collections.synchronizedMap(new HashMap<>());
 	
 	//玩家绑定技能的标记
-	public static HashMap<Player , String> playersetkey = new HashMap<>();
+	public static Map<UUID , String> playersetkey = Collections.synchronizedMap(new HashMap<>());
 	
 	/*==================================================================================*/
 	
@@ -109,7 +112,7 @@ public class OnlineData {
 	
 	//获取splayer
 	public static SPlayer getSPlayer(Player p) {
-		return players.get(p);
+		return players.get(p.getUniqueId());
 	}
 	
 }

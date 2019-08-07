@@ -30,7 +30,7 @@ public class PlayerListener implements Listener{
 			e1.printStackTrace();
 		}
 		
-		OnlineData.players.put(p, player);
+		OnlineData.players.put(p.getUniqueId(), player);
 	}
 	
 	@EventHandler
@@ -38,9 +38,9 @@ public class PlayerListener implements Listener{
 		Player p = e.getPlayer();
 		
 		//玩家按键信息保存
-		OnlineData.players.get(p).saveKeyBoard();
+		OnlineData.players.get(p.getUniqueId()).saveKeyBoard();
 		
-		OnlineData.players.remove(p);
+		OnlineData.players.remove(p.getUniqueId());
 	}
 	
 	//监控玩家的攻击行为

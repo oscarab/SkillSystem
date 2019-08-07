@@ -28,16 +28,16 @@ public class KeyboardUse implements Listener{
 		}
 		
 		//技能绑定事宜
-		if(OnlineData.playersetkey.get(p) != null) {
+		if(OnlineData.playersetkey.get(p.getUniqueId()) != null) {
 			
 			if(key == 57) {  //若为空格退出绑定
 				p.sendMessage("§f§l成功退出绑定！");
 			}else {
-				player.addKeyBoardSetting(key, Main.skillsdata.get( OnlineData.playersetkey.get(p) ) );
+				player.addKeyBoardSetting(key, Main.skillsdata.get( OnlineData.playersetkey.get(p.getUniqueId()) ) );
 				p.sendMessage("§f§l成功绑定！");
 			}
 
-			OnlineData.playersetkey.remove(p);
+			OnlineData.playersetkey.remove(p.getUniqueId());
 		}
 		
 	}

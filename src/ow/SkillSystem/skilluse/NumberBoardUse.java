@@ -44,7 +44,7 @@ public class NumberBoardUse implements Listener{
 			
 			if((lore.equalsIgnoreCase(" ") || lore.equalsIgnoreCase("§4§l未绑定")) && event.getClick().equals(ClickType.LEFT)) {
 				//左键开始绑定
-				OnlineData.playersetkey.put(player, name);
+				OnlineData.playersetkey.put(player.getUniqueId(), name);
 				if(Main.VexView) {
 					player.sendMessage("§f§l请按下你需要绑定的按键");
 				}else {
@@ -157,11 +157,11 @@ public class NumberBoardUse implements Listener{
 				
 			}
 			//绑定技能上去
-			else if(clickitem.equals(noskill) && event.getClick().equals(ClickType.LEFT) && OnlineData.playersetkey.get(player) != null){
+			else if(clickitem.equals(noskill) && event.getClick().equals(ClickType.LEFT) && OnlineData.playersetkey.get(player.getUniqueId()) != null){
 				
-				String skillname = OnlineData.playersetkey.get(player);
+				String skillname = OnlineData.playersetkey.get(player.getUniqueId());
 				inv.setItem(slot, getSkillItem(skillname));
-				OnlineData.playersetkey.remove(player);
+				OnlineData.playersetkey.remove(player.getUniqueId());
 				event.setCancelled(true);
 				
 			}

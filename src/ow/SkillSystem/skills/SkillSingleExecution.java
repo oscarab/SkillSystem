@@ -29,7 +29,15 @@ public class SkillSingleExecution {
   private int duration = 0;
   private String exduration = "0";
   
+  private int delay = 0;
+  
   public SkillSingleExecution(String arg) {
+	  //特殊技能条，延迟
+	  if(arg.startsWith("Delay")) {
+		  delay = Integer.parseInt(arg.split(":")[1]);
+		  return;
+	  }
+	  
 	  String[] args = arg.split("#");
 	  condition = new SkillCondition(args[0]);
 	  setTarget(args[1]);
@@ -57,6 +65,10 @@ public class SkillSingleExecution {
   
   public SkillCondition getCondition() {
 	  return condition;
+  }
+  
+  public int getDelay() {
+	  return delay;
   }
   
   //获取技能条释放的目标
@@ -109,7 +121,7 @@ public class SkillSingleExecution {
 		  SPlayer player = OnlineData.getSPlayer(self);
 
 		  player.addExecution(this, duration);
-		  OnlineData.players.put(self, player);
+		  OnlineData.players.put(self.getUniqueId(), player);
 	  }
   }
   

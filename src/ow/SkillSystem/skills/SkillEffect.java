@@ -19,7 +19,7 @@ public class SkillEffect {   //技能实际效果
     		"DamageSet","Damage","HealthSet",
     		"ShootArrows","Fire","Lightning",
     "Pull","PushBack","Message","ParticleEffect","SoundEffect",
-    "Jump","Explosion","DamagedSet","Delay"};
+    "Jump","Explosion","DamagedSet"};
     private String effect;
     
     //半成品的数字，尚未进行处理，仍为算式形式
@@ -219,14 +219,7 @@ public class SkillEffect {   //技能实际效果
     			
     		}
     	}
-    	//延迟
-    	else if(effect.equalsIgnoreCase("Delay")) {
-    		try {
-				Thread.sleep((long) (amount*1000));
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-    	}
+
     	
     }
 }

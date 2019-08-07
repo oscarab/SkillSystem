@@ -1,8 +1,7 @@
 package ow.SkillSystem.Thread;
 
 import java.util.Iterator;
-
-import org.bukkit.entity.Player;
+import java.util.UUID;
 
 import ow.SkillSystem.data.OnlineData;
 import ow.SkillSystem.data.SPlayer;
@@ -14,7 +13,7 @@ public class SkillThread extends Thread{
 		
 		while(true) {
 			
-			Iterator<Player> it = OnlineData.players.keySet().iterator();
+			Iterator<UUID> it = OnlineData.players.keySet().iterator();
 			while(it.hasNext()) {
 				SPlayer player =  OnlineData.players.get(it.next());
 				player.handleSkillTime();
