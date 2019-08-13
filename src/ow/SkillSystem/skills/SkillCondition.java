@@ -1,5 +1,6 @@
 package ow.SkillSystem.skills;
 
+import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,13 +11,17 @@ import ow.SkillSystem.Util;
 
 public class SkillCondition { 
 	//触发技能的条件
-    private String[] conditions = {"SelfHealth","EveryAttacking",
+    @SuppressWarnings("unused")
+	private String[] conditions = {"SelfHealth","EveryAttacking",
     "EveryKilling","TargetHealth","ItemConsuming","OnAir",
-    "ItemHas","NextAtttacking","NextKilling","Run","None"};
+    "ItemHas","NextAtttacking","NextKilling","Run","Storm","Time","Biome",
+    "None"};
     private String condition;
     //有关数值
     private int amount;
     private String examount = "0";
+    //有关字符串
+    private String tag;
     //有关物品
     private ItemStack item;
     //等于0，大于2，大于等于1，小于等于-1，小于-2
@@ -25,26 +30,31 @@ public class SkillCondition {
     private boolean isNone = false;
     
     public SkillCondition(String part) {
-    	if(part.contains("Health")) {
-    		setAboutHealth(part);
+    	if(part.contains("Health") || part.contains("Time")) {
+    		setAboutSignCondition(part);
     	}else if(part.contains("Item")) {
     		setAboutItem(part);
+    	}else if(part.contains("Biome")){
+    		setAboutBiome(part);
     	}else {
     		setSingleCondition(part);
     	}
     }
     
-    //处理关于生命值的条件
-    private void setAboutHealth(String part){
+    //处理包含比较符号的条件
+    private void setAboutSignCondition(String part){
     	Util util = new Util();
-    	if(part.contains("SelfHealth")) {
-    		condition = conditions[0];
-    		examount = part.substring(11);
-    	}else{
-    		condition = conditions[3];
-    		examount = part.substring(13);
-    	}
 		sign = util.getSign(part);
+    	if(part.contains("SelfHealth")) {
+    		condition = "SelfHealth";
+    		examount = part.substring(11);
+    	}else if(part.contains("TargetHealth")){
+    		condition = "TargetHealth";
+    		examount = part.substring(13);
+    	}else {
+    		condition = "Time";
+    		examount = part.substring(5);
+    	}
     }
     
     //处理关于物品的条件
@@ -53,6 +63,13 @@ public class SkillCondition {
     	condition = parts[0];
     	item = Main.items.get(parts[1]);
     	examount = parts[2];
+    }
+    
+    //设置关于生物群系的条件
+    private void setAboutBiome(String part) {
+    	String[] parts = part.split(":");
+    	condition = parts[0];
+    	tag = parts[1];
     }
     
     //处理关于无附加属性的条件
@@ -83,24 +100,15 @@ public class SkillCondition {
     	//检测血量
     	if(condition.contains("Health")) {
         	double health = condition.contains("Self")?self.getHealth():target.getHealth();
-        	switch(sign) {
-        	case -2:{
-        		return health < amount;
-        	}
-        	case -1:{
-        		return health <= amount;
-        	}
-        	case 1:{
-        		return health >= amount;
-        	}
-        	case 2:{
-        		return health > amount;
-        	}
-        	default:{
-        		return health == amount;
-        	}
-        	}
-    	}//检测是否在空中
+        	return compare(health);
+    	}
+    	//检测时间
+    	else if(condition.equalsIgnoreCase("Time")) {
+    		long time = self.getWorld().getTime();
+    		return compare(time);
+    		
+    	}
+    	//检测是否在空中
     	else if(condition.equalsIgnoreCase("OnAir")) {
     		return !self.isOnGround();
     	}//检测物品消耗
@@ -121,6 +129,15 @@ public class SkillCondition {
     	}//检测奔跑
     	else if(condition.equalsIgnoreCase("Run")) {
     		return self.isSprinting();
+    	}
+    	//检测雷暴
+    	else if(condition.equalsIgnoreCase("Storm")) {
+    		return self.getWorld().hasStorm();
+    	}
+    	//检测生物群系
+    	else if(condition.equalsIgnoreCase("Biome")) {
+    		Location loc = self.getLocation();
+    		return tag.equalsIgnoreCase(self.getWorld().getBiome(loc.getBlockX(), loc.getBlockZ()).name());
     	}
     	//无条件
     	else if(isNone) {
@@ -173,6 +190,26 @@ public class SkillCondition {
     	}
     	
     	return false;
+    }
+    
+    private boolean compare(double num) {
+    	switch(sign) {
+    	case -2:{
+    		return num < amount;
+    	}
+    	case -1:{
+    		return num <= amount;
+    	}
+    	case 1:{
+    		return num >= amount;
+    	}
+    	case 2:{
+    		return num > amount;
+    	}
+    	default:{
+    		return num == amount;
+    	}
+    	}
     }
     
 }

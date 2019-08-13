@@ -2,6 +2,7 @@ package ow.SkillSystem.skills;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -19,14 +20,18 @@ public class SkillEffect {   //技能实际效果
     		"DamageSet","Damage","HealthSet",
     		"ShootArrows","Fire","Lightning",
     "Pull","PushBack","Message","ParticleEffect","SoundEffect",
-    "Jump","Explosion","DamagedSet"};
+    "Jump","Explosion","DamagedSet","Command"};
     private String effect;
     
     //半成品的数字，尚未进行处理，仍为算式形式
     private String examount = "0";
     
-    //冷却未完成的提示语
+    //信息发送效果
     private String msg;
+    
+    //要执行的命令
+    private String command;
+    private String cmdsender;
     
     //预处理药水效果
     private String peduration = "0";
@@ -42,9 +47,11 @@ public class SkillEffect {   //技能实际效果
     	if(part.startsWith("PotionEffect")) {
     		setPotionEffect(part.split(":"));
     	}else if(part.startsWith("Message")) {
-    		setMessage(part.split(":"));
+    		setAboutMessage(part.split(":"));
     	}else if(part.contains("Effect")) {
     		setEffect(part.split(":"));
+    	}else if(part.startsWith("Command")){
+    		 setAboutCommand(part.split(":"));
     	}else {
     		setAboutNumber(part.split(":"));
     	}
@@ -69,10 +76,17 @@ public class SkillEffect {   //技能实际效果
     	effect = "PotionEffect";
     }
     
-    //处理信息效果
-    private void setMessage(String[] parts) {
+    //处理发送信息的效果
+    private void setAboutMessage(String[] parts) {
     	msg = parts[1];
-    	effect = "Message";
+    	effect = parts[0];
+    }
+    
+    //处理指令执行的效果
+    private void setAboutCommand(String[] parts) {
+    	effect = "Command";
+    	cmdsender = parts[1];
+    	command = parts[2];
     }
     
     //处理粒子与声音效果
@@ -184,6 +198,9 @@ public class SkillEffect {   //技能实际效果
     	}//发送信息
     	else if(effect.equalsIgnoreCase("Message")) {
     		for(LivingEntity entity : entities) {
+    			if(entity instanceof Player) {
+    				msg = Main.util.replaceAPI(msg, (Player) entity);
+    			}
     			entity.sendMessage(msg);
     		}
     	}//粒子效果
@@ -215,6 +232,35 @@ public class SkillEffect {   //技能实际效果
         			OnlineData.addDamagedSet(entity, amount, duration);
     			}else {
         			OnlineData.setDamagedSet(entity, amount);
+    			}
+    			
+    		}
+    	}
+    	//执行指令
+    	else if(effect.equalsIgnoreCase("Command")) {
+    		for(LivingEntity entity : entities) {
+    			
+    			if(entity instanceof Player) {
+    				Player target = (Player) entity;
+    				
+    				switch(cmdsender) {
+    				case "op":{
+    					target.setOp(true);
+    					Bukkit.dispatchCommand(target, Main.util.replaceAPI(command, target));
+    					target.setOp(false);
+    					break;
+    				}
+    				case "console":{
+    					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Main.util.replaceAPI(command, target));
+    					break;
+    				}
+    				case "player":{
+    					Bukkit.dispatchCommand(target, Main.util.replaceAPI(command, target));
+    					break;
+    				}
+    				
+    				}
+    				
     			}
     			
     		}
