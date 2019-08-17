@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -47,11 +48,23 @@ public class PlayerListener implements Listener{
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onDamage(EntityDamageByEntityEvent event) {
 		//让玩家执行在时间内的技能条
+		
 		if(event.getDamager() instanceof Player && event.getEntity() instanceof LivingEntity) {
 			Player p = (Player) event.getDamager();
 			SPlayer player = OnlineData.getSPlayer(p);
 			
 			player.runExecution("ATTACK");
+		}else if(event.getDamager() instanceof Projectile && event.getEntity() instanceof LivingEntity) {
+			
+			Projectile projectile = (Projectile) event.getDamager();
+			
+			if(projectile.getShooter() instanceof Player) {
+				Player p = (Player) projectile.getShooter();
+				SPlayer player = OnlineData.getSPlayer(p);
+				
+				player.runExecution("ATTACK");
+			}
+			
 		}
 		
 	}

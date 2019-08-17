@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 
 public class OnlineData {
 	
@@ -17,6 +18,9 @@ public class OnlineData {
 	//调整所受的伤害   格式：   生物/伤害设置/持续时间      
 	//若为0则是无敌，正数是增加所受伤害，负数是减少所受伤害
 	public static Map<LivingEntity, String> damagedset = Collections.synchronizedMap(new HashMap<>());
+	
+	//抛射物伤害标记
+	public static HashMap<Projectile , Double> projectiledamage = new HashMap<>();
 	
 	//玩家列表
 	public static Map<UUID,SPlayer> players = Collections.synchronizedMap(new HashMap<>());

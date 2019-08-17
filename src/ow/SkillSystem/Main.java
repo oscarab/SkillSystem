@@ -75,7 +75,7 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
-		getLogger().info("技能系统启动完成！当前版本:v1.4.4");
+		getLogger().info("技能系统启动完成！当前版本:v1.4.5");
 	}
 	
 	//初始化当前服务器中的玩家数据
@@ -167,8 +167,15 @@ public class Main extends JavaPlugin{
 				OnlineData.players.clear();
 				initPlayers();
 				sender.sendMessage("[SkillSystem]重载技能系统完成！");
-			}else {
-				sender.sendMessage("未知指令");
+			}else if(args.length == 1 && sender instanceof Player) {
+				
+				Skill skill = skillsdata.get(args[0]);
+				SPlayer player = OnlineData.getSPlayer((Player) sender);
+				
+				if(skill != null) {
+					player.setSkill(skill);
+				}
+
 			}
 			
 		}

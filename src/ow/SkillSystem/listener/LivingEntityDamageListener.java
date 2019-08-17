@@ -1,7 +1,7 @@
 package ow.SkillSystem.listener;
 
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -22,12 +22,19 @@ public class LivingEntityDamageListener implements Listener{
 			
 			event.setDamage(damageset < 0 ? 0 : damageset);
 			
-		}else if(event.getDamager() instanceof Arrow){
+		}else if(event.getDamager() instanceof Projectile){
 			
-			Arrow arrow = (Arrow) event.getDamager();
+			Projectile projectile = (Projectile) event.getDamager();
 			
-			if(arrow.getShooter() instanceof LivingEntity) {
-				LivingEntity entity = (LivingEntity) arrow.getShooter();
+			if(OnlineData.projectiledamage.get(projectile) != null) {
+				double projectiledamage = OnlineData.projectiledamage.get(projectile);
+				
+				//设置弹射物初始伤害
+				event.setDamage(projectiledamage);
+			}
+			
+			if(projectile.getShooter() instanceof LivingEntity) {
+				LivingEntity entity = (LivingEntity) projectile.getShooter();
 				double damageset = event.getDamage()+OnlineData.getDamage(entity);
 				
 				event.setDamage(damageset < 0 ? 0 : damageset);

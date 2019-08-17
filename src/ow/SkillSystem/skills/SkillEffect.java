@@ -10,15 +10,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import ow.SkillSystem.Main;
-import ow.SkillSystem.SpecialEffects.ParticleEffect;
-import ow.SkillSystem.SpecialEffects.SoundEffect;
+import ow.SkillSystem.SpecialEffects.*;
 import ow.SkillSystem.data.OnlineData;
 
 public class SkillEffect {   //技能实际效果
     @SuppressWarnings("unused")
 	private String[] effects = {"Charge","PotionEffect",
     		"DamageSet","Damage","HealthSet",
-    		"ShootArrows","Fire","Lightning",
+    		"Shoot","Fire","Lightning",
     "Pull","PushBack","Message","ParticleEffect","SoundEffect",
     "Jump","Explosion","DamagedSet","Command"};
     private String effect;
@@ -39,8 +38,12 @@ public class SkillEffect {   //技能实际效果
     private PotionEffectType petype;
     private PotionEffect potioneffect;
     
+    //粒子效果与声音效果
     private ParticleEffect particleeffect;
     private SoundEffect soundeffect;
+    
+    //抛射物效果
+    private ProjectileEffect projectile;
     
     //开始处理技能条中的效果部分
     public SkillEffect(String part) {
@@ -52,6 +55,8 @@ public class SkillEffect {   //技能实际效果
     		setEffect(part.split(":"));
     	}else if(part.startsWith("Command")){
     		 setAboutCommand(part.split(":"));
+    	}else if(part.startsWith("Shoot")){
+    		setAboutProjectile(part.split(":"));
     	}else {
     		setAboutNumber(part.split(":"));
     	}
@@ -59,7 +64,7 @@ public class SkillEffect {   //技能实际效果
     
     /*处理效果后仅单个数字
      * Charge DamageSet Damage HealthIncrease
-     * Fire Pull PushBack ShootArrows Jump
+     * Fire Pull PushBack Jump
      */
     private void setAboutNumber(String[] parts) {
     	examount = parts[1];
@@ -105,6 +110,14 @@ public class SkillEffect {   //技能实际效果
     	
     }
     
+    //处理抛射物效果
+    private void setAboutProjectile(String[] parts) {
+    	
+    	projectile = new ProjectileEffect(parts[1] , parts[2] , parts[3]);
+    	effect = "Shoot";
+    	
+    }
+    
     public String getEffect() {
     	return effect;
     }
@@ -127,17 +140,20 @@ public class SkillEffect {   //技能实际效果
     		for(LivingEntity entity : entities) {
     			entity.addPotionEffect(potioneffect);
     		}
-    	}//伤害效果
+    	}
+    	//伤害效果
     	else if(effect.equalsIgnoreCase("Damage")) {
     		for(LivingEntity entity : entities) {
     			entity.damage(amount);
     		}
-    	}//着火
+    	}
+    	//着火
     	else if(effect.equalsIgnoreCase("Fire")) {
     		for(LivingEntity entity : entities) {
     			entity.setFireTicks((int) amount);
     		}
-    	}//闪电
+    	}
+    	//闪电
     	else if(effect.equalsIgnoreCase("Lightning")) {
     		for(LivingEntity entity : entities) {
     			
@@ -146,15 +162,16 @@ public class SkillEffect {   //技能实际效果
     			}
 
     		}
-    	}//射箭
-    	else if(effect.equalsIgnoreCase("ShootArrows")) {
+    	}
+    	//抛射物
+    	else if(effect.equalsIgnoreCase("Shoot")) {
     		for(LivingEntity entity : entities) {
-    			Location loc = entity.getEyeLocation();
     			
-        		entity.getWorld().spawnArrow(loc, loc.getDirection(), (float) amount, 12);
-
+    			projectile.runOnEntity(entity, user);
+    			
     		}
-    	}//血量强行调整
+    	}
+    	//血量强行调整
     	else if(effect.equalsIgnoreCase("HealthSet")) {
     		
     		for(LivingEntity entity : entities) {
@@ -169,7 +186,8 @@ public class SkillEffect {   //技能实际效果
     			
     		}
     		
-    	}//强行调整攻击力
+    	}
+    	//强行调整攻击力
     	else if(effect.equalsIgnoreCase("DamageSet")) {
     		for(LivingEntity entity : entities) {
     			
@@ -180,51 +198,62 @@ public class SkillEffect {   //技能实际效果
     			}
     			
     		}
-    	}//击退
+    	}
+    	//击退
     	else if(effect.equalsIgnoreCase("PushBack")) {
     		for(LivingEntity entity : entities) {
     			skillutil.pushBack(user, entity, amount);
     		}
-    	}//拉近
+    	}
+    	//拉近
     	else if(effect.equalsIgnoreCase("Pull")) {
     		for(LivingEntity entity : entities) {
     			skillutil.pull(user, entity, amount);
     		}
-    	}//冲锋
+    	}
+    	//冲锋
     	else if(effect.equalsIgnoreCase("Charge")) {
     		for(LivingEntity entity : entities) {
     			skillutil.charge(entity, amount);
     		}
-    	}//发送信息
+    	}
+    	//发送信息
     	else if(effect.equalsIgnoreCase("Message")) {
     		for(LivingEntity entity : entities) {
+    			
     			if(entity instanceof Player) {
     				msg = Main.util.replaceAPI(msg, (Player) entity);
     			}
+    			
     			entity.sendMessage(msg);
     		}
-    	}//粒子效果
+    	}
+    	//粒子效果
     	else if(effect.equalsIgnoreCase("ParticleEffect")) {
     		for(LivingEntity entity : entities) {
     			particleeffect.playNormal(entity.getWorld(), entity.getEyeLocation());
     		}
-    	}//声音效果
+    	}
+    	//声音效果
     	else if(effect.equalsIgnoreCase("SoundEffect")) {
     		for(LivingEntity entity : entities) {
     			soundeffect.play(entity.getWorld(), entity.getLocation());
     		}
-    	}//击飞
+    	}
+    	//击飞
     	else if(effect.equalsIgnoreCase("Jump")) {
     		for(LivingEntity entity : entities) {
     			skillutil.jump(entity, amount);
     		}
-    	}//爆炸
+    	}
+    	//爆炸
     	else if(effect.equalsIgnoreCase("Explosion")) {
     		for(LivingEntity entity : entities) {
     			Location loc = entity.getLocation();
     			entity.getWorld().createExplosion(loc.getX() , loc.getY() , loc.getZ() , (float) amount , false , false);
     		}
-    	}//强行调整[所受]的伤害
+    	}
+    	//强行调整[所受]的伤害
     	else if(effect.equalsIgnoreCase("DamagedSet")) {
     		for(LivingEntity entity : entities) {
     			

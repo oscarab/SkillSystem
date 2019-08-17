@@ -16,16 +16,22 @@ public class SkillCondition {
     "EveryKilling","TargetHealth","ItemConsuming","OnAir",
     "ItemHas","NextAtttacking","NextKilling","Run","Storm","Time","Biome",
     "None"};
+    
     private String condition;
+    
     //有关数值
     private int amount;
     private String examount = "0";
+    
     //有关字符串
     private String tag;
+    
     //有关物品
     private ItemStack item;
+    
     //等于0，大于2，大于等于1，小于等于-1，小于-2
     private int sign;
+    
     //是否无条件
     private boolean isNone = false;
     
@@ -111,7 +117,8 @@ public class SkillCondition {
     	//检测是否在空中
     	else if(condition.equalsIgnoreCase("OnAir")) {
     		return !self.isOnGround();
-    	}//检测物品消耗
+    	}
+    	//检测物品消耗
     	else if(condition.equalsIgnoreCase("ItemConsuming")) {
 
     		PlayerInventory inv = self.getInventory();
@@ -122,11 +129,13 @@ public class SkillCondition {
     			return true;
     		}
     		return false;
-    	}//检测物品拥有
+    	}
+    	//检测物品拥有
     	else if(condition.equalsIgnoreCase("ItemHas")) {
 
     		return hasItem(item , self.getInventory() , amount);
-    	}//检测奔跑
+    	}
+    	//检测奔跑
     	else if(condition.equalsIgnoreCase("Run")) {
     		return self.isSprinting();
     	}
