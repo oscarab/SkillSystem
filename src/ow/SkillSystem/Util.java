@@ -126,6 +126,8 @@ public class Util {
 			  
 		  }
 		  
+		  lores.addAll(skill.getDescription());
+		  
 		  meta.setLore(lores);
 		  item.setItemMeta(meta);
 		  

@@ -10,21 +10,23 @@ import ow.SkillSystem.Main;
 
 public class Skill {
   private String name;         //技能名字
+  private List<String> description;         //技能描述
   private int cooldown;        //冷却时间
   private boolean needPermission = true;
-  private String message;
+  private String message;             //冷却未完成的提示语
   private boolean canKey = false;    //能否用按键触发
   private List<String> worlds = new ArrayList<>();      //禁止释放的世界
   
   private List<SkillSingleExecution> executions = new ArrayList<>();
 
-  public Skill(String name , int cooldown , boolean np , String msg ,boolean cank ,List<String> worlds) {
+  public Skill(String name , int cooldown , boolean np , String msg ,boolean cank ,List<String> worlds , List<String> description) {
 	  this.name = name;
 	  this.cooldown = cooldown;
 	  needPermission = np;
 	  message = msg;
 	  canKey = cank;
 	  this.worlds = worlds;
+	  this.description = description;
   }
   
   //导入单条技能执行
@@ -46,6 +48,10 @@ public class Skill {
   
   public String getName() {
 	  return name;
+  }
+  
+  public List<String> getDescription() {
+	  return description;
   }
   
   //是否可用键盘触发
@@ -73,6 +79,11 @@ public class Skill {
 	  
 	  for(int i = 0 ; i < executions.size() ; i++) {
 		  SkillSingleExecution execution = executions.get(i);
+		  
+		  //若为技能停止的效果，直接停止执行
+		  if(execution.isStop()) {
+			  return;
+		  }
 		  
 		  //延迟
 		  if(execution.getDelay() != 0) {

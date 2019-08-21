@@ -19,7 +19,7 @@ public class SkillEffect {   //技能实际效果
     		"DamageSet","Damage","HealthSet",
     		"Shoot","Fire","Lightning",
     "Pull","PushBack","Message","ParticleEffect","SoundEffect",
-    "Jump","Explosion","DamagedSet","Command"};
+    "Jump","Explosion","DamagedSet","Command","Stop","CooldownSet"};
     private String effect;
     
     //半成品的数字，尚未进行处理，仍为算式形式
@@ -57,8 +57,10 @@ public class SkillEffect {   //技能实际效果
     		 setAboutCommand(part.split(":"));
     	}else if(part.startsWith("Shoot")){
     		setAboutProjectile(part.split(":"));
-    	}else {
+    	}else if(part.contains(":")){
     		setAboutNumber(part.split(":"));
+    	}else if(part.equalsIgnoreCase("Stop")){
+    		effect = "Stop";
     	}
     }
     
@@ -294,7 +296,6 @@ public class SkillEffect {   //技能实际效果
     			
     		}
     	}
-
     	
     }
 }

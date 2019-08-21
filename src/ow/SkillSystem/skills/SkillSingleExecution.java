@@ -29,7 +29,11 @@ public class SkillSingleExecution {
   private int duration = 0;
   private String exduration = "0";
   
+  //技能延迟效果
   private int delay = 0;
+  
+  //技能跳转结束
+  private boolean stop = false;
   
   public SkillSingleExecution(String arg) {
 	  //特殊技能条，延迟
@@ -38,18 +42,21 @@ public class SkillSingleExecution {
 		  return;
 	  }
 	  
+	  //初始化技能条详细信息
 	  String[] args = arg.split("#");
 	  condition = new SkillCondition(args[0]);
 	  setTarget(args[1]);
 	  effect = new SkillEffect(args[2]);
 	  exduration = args[3];
 	  
-	  checkDuration();        //检查是否是可持续的技能执行
-  }
-  
-  private void checkDuration() {
+	//检查是否是可持续的技能执行
 	  if(!Main.util.canHasDuration(condition, target, effect)) {
 		  duration = -1;
+	  }        
+	  
+	  //标记为停止效果
+	  if(effect.getEffect().equalsIgnoreCase("Stop")) {
+		  stop = true;
 	  }
   }
   
@@ -69,6 +76,10 @@ public class SkillSingleExecution {
   
   public int getDelay() {
 	  return delay;
+  }
+  
+  public boolean isStop() {
+	  return stop;
   }
   
   //获取技能条释放的目标
