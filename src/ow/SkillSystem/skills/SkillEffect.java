@@ -276,9 +276,14 @@ public class SkillEffect {   //技能实际效果
     				
     				switch(cmdsender) {
     				case "op":{
-    					target.setOp(true);
-    					Bukkit.dispatchCommand(target, Main.util.replaceAPI(command, target));
-    					target.setOp(false);
+    					boolean isop = target.isOp();
+    					if(isop) {
+        					Bukkit.dispatchCommand(target, Main.util.replaceAPI(command, target));
+    					}else {
+        					target.setOp(true);
+        					Bukkit.dispatchCommand(target, Main.util.replaceAPI(command, target));
+        					target.setOp(false);
+    					}
     					break;
     				}
     				case "console":{

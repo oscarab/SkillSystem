@@ -82,7 +82,7 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
-		getLogger().info("技能系统启动完成！当前版本:v1.4.6");
+		getLogger().info("技能系统启动完成！当前版本:v1.4.7");
 	}
 	
 	//初始化当前服务器中的玩家数据
