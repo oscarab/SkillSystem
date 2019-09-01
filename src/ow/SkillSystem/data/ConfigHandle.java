@@ -66,13 +66,13 @@ public class ConfigHandle {
 			String key = itn.next();
 			String name = itemsyml.getString(key+".name");
 			String type = itemsyml.getString(key+".type");
+			List<String> lores = itemsyml.getStringList(key+".lore");
 			
 			ItemStack item = new ItemStack(Material.valueOf(type));
 			ItemMeta meta = item.getItemMeta();
 			
-			List<String> lores = itemsyml.getStringList(key+".lore");
-			meta.setLore(lores);
-			meta.setDisplayName(name);
+			if(lores != null) {meta.setLore(lores);}
+			if(name != null) {meta.setDisplayName(name);}
 			item.setItemMeta(meta);
 			
 			Main.items.put(key,item);

@@ -3,7 +3,9 @@ package ow.SkillSystem.data;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import ow.SkillSystem.Main;
@@ -11,7 +13,7 @@ import ow.SkillSystem.skills.Skill;
 import ow.SkillSystem.skills.SkillSingleExecution;
 
 public class SPlayer {
-   private Player player;
+   private UUID uuid;
    
    //正开启的技能，对应冷却时间
    private HashMap<Skill,Integer> skills = new HashMap<>();
@@ -26,11 +28,11 @@ public class SPlayer {
    private HashMap<Integer , Skill> keyBoard = new HashMap<>();
    
    public SPlayer(Player p) {
-	   player = p;
+	   uuid = p.getUniqueId();
    }
    
    public Player getPlayer() {
-	   return player;
+	   return Bukkit.getPlayer(uuid);
    }
    
    //新添技能对应的按键
@@ -77,7 +79,7 @@ public class SPlayer {
    public void saveKeyBoard(){
 	   
 	   try {
-		Main.handle.savePlayerYML(keyBoard , player);
+		Main.handle.savePlayerYML(keyBoard , getPlayer());
 	} catch (IOException e) {
 		e.printStackTrace();
 	}
@@ -86,6 +88,8 @@ public class SPlayer {
    
    //让玩家执行技能
    public void setSkill(Skill skill) {
+	   
+	   Player player = getPlayer();
 	   
 	   if(skill.getIsNeedPermission() && !player.hasPermission("SkillSystem."+skill.getName())) {
 		   player.sendMessage("§4你没有使用此技能的权限！");
@@ -125,6 +129,7 @@ public class SPlayer {
 
 		   SkillSingleExecution arg =  it.next();
 		   String condition = arg.getCondition().getCondition();
+		   Player player = getPlayer();
 		   
 		   if((type.equals("KILL") && condition.contains("Kill"))||
 				   condition.contains("Attack")) {

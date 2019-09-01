@@ -13,8 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-
 import ow.SkillSystem.Thread.*;
 import ow.SkillSystem.data.ConfigHandle;
 import ow.SkillSystem.data.OnlineData;
@@ -82,7 +80,7 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
-		getLogger().info("技能系统启动完成！当前版本:v1.4.7");
+		getLogger().info("技能系统启动完成！当前版本:v1.4.8");
 	}
 	
 	//初始化当前服务器中的玩家数据
