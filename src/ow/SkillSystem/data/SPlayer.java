@@ -6,7 +6,13 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.containers.Flags;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 
 import ow.SkillSystem.Main;
 import ow.SkillSystem.skills.Skill;
@@ -99,6 +105,20 @@ public class SPlayer {
 	   if(skill.getBanWorlds() != null && skill.getBanWorlds().contains(player.getWorld().getName())) {
 		   player.sendMessage("§4本世界你不能使用这个技能！");
 		   return;
+	   }
+	   
+	   if(Main.Residence) {
+		   Location loc = player.getLocation();
+		   ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(loc);
+		   
+		   if(res != null) {
+			   ResidencePermissions perms = res.getPermissions();
+			   if(!perms.playerHas(player, Flags.pvp, true)) {
+				   player.sendMessage("§4此处你不能使用技能！");
+				   return;
+			   }
+		   }
+		   
 	   }
 	   
 	   if(!isSkillCooldown(skill)) {

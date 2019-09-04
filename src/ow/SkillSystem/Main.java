@@ -37,7 +37,7 @@ public class Main extends JavaPlugin{
 	
 	public static boolean PaPi = false;
 	public static boolean VexView = false;
-	public static boolean WorldGuard = false;
+	public static boolean Residence = false;
 	
 	public void onEnable() {
 		plugin = this;
@@ -52,9 +52,9 @@ public class Main extends JavaPlugin{
 			getLogger().info("检测到VexView存在，可以使用键盘触发技能！");
 			VexView = true;
 		}
-		if(Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
-			//测试阶段
-			WorldGuard = true;
+		if(Bukkit.getPluginManager().isPluginEnabled("Residence")) {
+			getLogger().info("检测到Residence存在，若领地不允许pvp将不能释放技能！");
+			Residence = true;
 		}
 		
 		try {
@@ -80,7 +80,7 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
-		getLogger().info("技能系统启动完成！当前版本:v1.4.8");
+		getLogger().info("技能系统启动完成！当前版本:v1.4.9");
 	}
 	
 	//初始化当前服务器中的玩家数据
