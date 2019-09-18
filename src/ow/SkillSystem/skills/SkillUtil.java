@@ -1,5 +1,6 @@
 package ow.SkillSystem.skills;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -79,6 +80,32 @@ public class SkillUtil {
 			}
 		}
 		return null;
+	}
+	/**
+	 * 返回一条线上的生物
+	 * @param p 玩家
+	 * @param distance 距离
+	 * @return
+	 */
+	public List<LivingEntity> getLineEntity(Player p , double distance){
+		List<Entity> entities = p.getNearbyEntities(distance ,distance, distance);
+		List<LivingEntity> args = new ArrayList<>();
+		for(Entity en : entities) {
+			if(en instanceof LivingEntity) {
+				LivingEntity len = (LivingEntity) en ;
+				Location end = len.getEyeLocation().clone();
+				Location start = p.getEyeLocation().clone();
+				Vector v = end.subtract(start).toVector();
+				Vector sight = p.getEyeLocation().getDirection();
+				
+				double length = Math.cos(v.angle(sight));
+				if(length >0.91) {
+					args.add(len);
+				}
+			}
+		}
+		return args;
+		
 	}
 	
 }

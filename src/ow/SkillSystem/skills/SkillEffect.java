@@ -19,7 +19,7 @@ public class SkillEffect {   //技能实际效果
     		"DamageSet","Damage","HealthSet",
     		"Shoot","Fire","Lightning",
     "Pull","PushBack","Message","ParticleEffect","SoundEffect",
-    "Jump","Explosion","DamagedSet","Command","Stop","CooldownSet"};
+    "Jump","Explosion","DamagedSet","Command","Goto"};
     private String effect;
     
     //半成品的数字，尚未进行处理，仍为算式形式
@@ -45,6 +45,10 @@ public class SkillEffect {   //技能实际效果
     //抛射物效果
     private ProjectileEffect projectile;
     
+    //跳转效果
+    private int packet = 0;
+    private int line = 1;
+    
     //开始处理技能条中的效果部分
     public SkillEffect(String part) {
     	if(part.startsWith("PotionEffect")) {
@@ -57,10 +61,10 @@ public class SkillEffect {   //技能实际效果
     		 setAboutCommand(part.split(":"));
     	}else if(part.startsWith("Shoot")){
     		setAboutProjectile(part.split(":"));
+    	}else if(part.startsWith("Goto")) {
+    		setGoto(part.split(":"));
     	}else if(part.contains(":")){
     		setAboutNumber(part.split(":"));
-    	}else if(part.equalsIgnoreCase("Stop")){
-    		effect = "Stop";
     	}
     }
     
@@ -120,8 +124,24 @@ public class SkillEffect {   //技能实际效果
     	
     }
     
+    //处理跳转效果
+    private void setGoto(String[] parts) {
+    	
+    	effect = "Goto";
+    	packet = Integer.parseInt(parts[1]);
+    	line = Integer.parseInt(parts[2]);
+    	
+    }
+    
     public String getEffect() {
     	return effect;
+    }
+    
+    public int getGotoPacket() {
+    	return packet;
+    }
+    public int getGotoLine() {
+    	return line;
     }
     
     /**

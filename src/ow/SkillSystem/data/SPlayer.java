@@ -141,7 +141,7 @@ public class SPlayer {
 	   executions.put(execution, time);
    }
    
-   //执行在时间内的技能条
+   //执行在时间内的标记技能条
    public void runExecution(String type) {
 	   Iterator<SkillSingleExecution> it = executions.keySet().iterator();
 

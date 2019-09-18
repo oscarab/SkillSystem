@@ -50,9 +50,12 @@ public class ConfigHandle {
 			String msg = skillsyml.getString(key+".message");
 			List<String> worlds = skillsyml.getStringList(key+".banWorlds");
 			List<String> description = skillsyml.getStringList(key+".description");
+			int packet = skillsyml.getInt(key+".packet");
 			
 			Skill skill = new Skill(key , cooldown ,np , msg , ck , worlds , description);
-			skill.setExecution(skillsyml.getStringList(key+".execution"));
+			for(int i = 1 ; i <= packet ; i++) {
+				skill.setExecution(skillsyml.getStringList(key+".executionPacket"+i));
+			}
 			
 			Main.skillsdata.put(key,skill);
 			Main.skills.add(skill);

@@ -15,7 +15,7 @@ public class SkillCondition {
 	private String[] conditions = {"SelfHealth","EveryAttacking",
     "EveryKilling","TargetHealth","ItemConsuming","OnAir",
     "ItemHas","NextAtttacking","NextKilling","Run","Storm","Time","Biome",
-    "None"};
+    "Probability","HasPointEntity","HasRaduisEntity","None"};
     
     private String condition;
     
@@ -32,6 +32,12 @@ public class SkillCondition {
     //等于0，大于2，大于等于1，小于等于-1，小于-2
     private int sign;
     
+    //概率
+    private String probability = "0";
+    
+    //距离
+    private String distance = "0";
+    
     //是否无条件
     private boolean isNone = false;
     
@@ -42,6 +48,10 @@ public class SkillCondition {
     		setAboutItem(part);
     	}else if(part.contains("Biome")){
     		setAboutBiome(part);
+    	}else if(part.contains("Probability")) {
+    		setAboutProbability(part);
+    	}else if(part.contains("Entity")) {
+    		setAboutEntity(part);
     	}else {
     		setSingleCondition(part);
     	}
@@ -76,6 +86,19 @@ public class SkillCondition {
     	String[] parts = part.split(":");
     	condition = parts[0];
     	tag = parts[1];
+    }
+    
+    //设置关于概率的条件
+    private void setAboutProbability(String part) {
+    	condition = "Probability";
+    	probability = part.split(":")[1];
+    }
+    
+    //处理关于目标生物存在的条件
+    private void setAboutEntity(String part) {
+    	String[] parts = part.split(":");
+    	condition = parts[0];
+    	distance = parts[1];
     }
     
     //处理关于无附加属性的条件
@@ -147,6 +170,26 @@ public class SkillCondition {
     	else if(condition.equalsIgnoreCase("Biome")) {
     		Location loc = self.getLocation();
     		return tag.equalsIgnoreCase(self.getWorld().getBiome(loc.getBlockX(), loc.getBlockZ()).name());
+    	}
+    	//概率触发
+    	else if(condition.equalsIgnoreCase("Probability")) {
+    		double pro = Main.util.getDoubleNumber(probability, self);
+    		
+    		return Math.random() <= pro;
+    	}
+    	//指向生物
+    	else if(condition.equalsIgnoreCase("HasPointEntity")) {
+    		
+    		double distance = Main.util.getDoubleNumber(this.distance, self);
+    		return new SkillUtil().getTargetEntity(self, distance) != null;
+    	
+    	}
+    	//范围生物
+    	else if(condition.equalsIgnoreCase("HasRaduisEntity")) {
+    		
+    		double distance = Main.util.getDoubleNumber(this.distance, self);
+    		return !self.getNearbyEntities(distance, distance, distance).isEmpty();
+    		
     	}
     	//无条件
     	else if(isNone) {

@@ -43,17 +43,18 @@ public class Main extends JavaPlugin{
 		plugin = this;
 		util = new Util();
 		
+		Bukkit.getConsoleSender().sendMessage("§2============= §9SkillSystem > §4Loading§2 =============");
 		//检测前置插件
 		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-			getLogger().info("检测到PlaceholderAPI存在，可以使用相关变量！");
+			Bukkit.getConsoleSender().sendMessage("§6检测到PlaceholderAPI存在，可以使用相关变量！");
 			PaPi = true;
 		}
 		if(Bukkit.getPluginManager().isPluginEnabled("VexView")) {
-			getLogger().info("检测到VexView存在，可以使用键盘触发技能！");
+			Bukkit.getConsoleSender().sendMessage("§6检测到VexView存在，可以使用键盘触发技能！");
 			VexView = true;
 		}
 		if(Bukkit.getPluginManager().isPluginEnabled("Residence")) {
-			getLogger().info("检测到Residence存在，若领地不允许pvp将不能释放技能！");
+			Bukkit.getConsoleSender().sendMessage("§6检测到Residence存在，若领地不允许pvp将不能释放技能！");
 			Residence = true;
 		}
 		
@@ -61,15 +62,15 @@ public class Main extends JavaPlugin{
 			handle = new ConfigHandle();
 			handle.loadItems();
 			handle.loadSkills();
-			getLogger().info("配置文件加载成功！");
+			Bukkit.getConsoleSender().sendMessage("§2配置文件加载成功！");
 		} catch (IOException e) {
 			e.printStackTrace();
-			getLogger().info("创建相关配置文件时出现错误！请检查相关文件！");
+			Bukkit.getConsoleSender().sendMessage("§4创建相关配置文件时出现错误！请检查相关文件！");
 		}
 		
 		//初始化现有玩家
 		initPlayers();
-		getLogger().info("初始化完成现有玩家！");
+		Bukkit.getConsoleSender().sendMessage("§2初始化完成现有玩家！");
 		
 		runThread();
 		
@@ -80,7 +81,8 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
-		getLogger().info("技能系统启动完成！当前版本:v1.4.9");
+		Bukkit.getConsoleSender().sendMessage("§2技能系统启动完成！当前版本:§4v1.5.1");
+		Bukkit.getConsoleSender().sendMessage("§2============= §9SkillSystem > §2Finishing §2=============");
 	}
 	
 	//初始化当前服务器中的玩家数据
