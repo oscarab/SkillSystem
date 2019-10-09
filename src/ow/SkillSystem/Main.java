@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import ow.SkillSystem.Thread.*;
 import ow.SkillSystem.data.ConfigHandle;
+import ow.SkillSystem.data.Message;
 import ow.SkillSystem.data.OnlineData;
 import ow.SkillSystem.data.SPlayer;
 import ow.SkillSystem.listener.*;
@@ -26,6 +27,7 @@ public class Main extends JavaPlugin{
 	public static Main plugin;
 	public static Util util;
 	public static ConfigHandle handle;
+	public static Message message;
 	
 	public static HashMap<String,Skill> skillsdata = new HashMap<>();
 	public static List<Skill> skills = new ArrayList<>();
@@ -59,6 +61,8 @@ public class Main extends JavaPlugin{
 		}
 		
 		try {
+			message = new Message();
+			
 			handle = new ConfigHandle();
 			handle.loadItems();
 			handle.loadSkills();
@@ -81,7 +85,7 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
-		Bukkit.getConsoleSender().sendMessage("§2技能系统启动完成！当前版本:§4v1.5.1");
+		Bukkit.getConsoleSender().sendMessage("§2技能系统启动完成！当前版本:§4v1.5.2");
 		Bukkit.getConsoleSender().sendMessage("§2============= §9SkillSystem > §2Finishing §2=============");
 	}
 	

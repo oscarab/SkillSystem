@@ -15,7 +15,7 @@ public class SkillCondition {
 	private String[] conditions = {"SelfHealth","EveryAttacking",
     "EveryKilling","TargetHealth","ItemConsuming","OnAir",
     "ItemHas","NextAtttacking","NextKilling","Run","Storm","Time","Biome",
-    "Probability","HasPointEntity","HasRaduisEntity","None"};
+    "Probability","HasPointEntity","HasRaduisEntity","Equation","None"};
     
     private String condition;
     
@@ -38,6 +38,9 @@ public class SkillCondition {
     //距离
     private String distance = "0";
     
+    //方程式
+    private String[] equation = new String[2];
+    
     //是否无条件
     private boolean isNone = false;
     
@@ -52,6 +55,8 @@ public class SkillCondition {
     		setAboutProbability(part);
     	}else if(part.contains("Entity")) {
     		setAboutEntity(part);
+    	}else if(part.startsWith("Equation")){
+    		setAboutEquation(part);
     	}else {
     		setSingleCondition(part);
     	}
@@ -101,6 +106,17 @@ public class SkillCondition {
     	distance = parts[1];
     }
     
+    //处理方程式的条件
+    private void setAboutEquation(String part) {
+    	String[] parts = part.split(":");
+    	condition = parts[0];
+    	
+    	Util util = new Util();
+		sign = util.getSign(parts[1]);
+		equation = parts[1].split(util.getSign(sign));
+    	
+    }
+    
     //处理关于无附加属性的条件
     private void setSingleCondition(String part) {
     	if(part.equalsIgnoreCase("None")) {
@@ -129,12 +145,12 @@ public class SkillCondition {
     	//检测血量
     	if(condition.contains("Health")) {
         	double health = condition.contains("Self")?self.getHealth():target.getHealth();
-        	return compare(health);
+        	return compare(health , amount);
     	}
     	//检测时间
     	else if(condition.equalsIgnoreCase("Time")) {
     		long time = self.getWorld().getTime();
-    		return compare(time);
+    		return compare(time , amount);
     		
     	}
     	//检测是否在空中
@@ -191,6 +207,15 @@ public class SkillCondition {
     		return !self.getNearbyEntities(distance, distance, distance).isEmpty();
     		
     	}
+    	//算式比较
+    	else if(condition.equalsIgnoreCase("Equation")) {
+    		
+    		double left = Main.util.getDoubleNumber(equation[0], self);
+    		double right = Main.util.getDoubleNumber(equation[1], self);
+    		
+    		return compare(left , right);
+    		
+    	}
     	//无条件
     	else if(isNone) {
     		return true;
@@ -244,22 +269,22 @@ public class SkillCondition {
     	return false;
     }
     
-    private boolean compare(double num) {
+    private boolean compare(double left , double right) {
     	switch(sign) {
     	case -2:{
-    		return num < amount;
+    		return left < right;
     	}
     	case -1:{
-    		return num <= amount;
+    		return left <= right;
     	}
     	case 1:{
-    		return num >= amount;
+    		return left >= right;
     	}
     	case 2:{
-    		return num > amount;
+    		return left > right;
     	}
     	default:{
-    		return num == amount;
+    		return left == right;
     	}
     	}
     }

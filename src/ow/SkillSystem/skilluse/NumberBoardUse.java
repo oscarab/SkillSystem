@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.Inventory;
@@ -46,25 +47,36 @@ public class NumberBoardUse implements Listener{
 				//左键开始绑定
 				OnlineData.playersetkey.put(player.getUniqueId(), name);
 				if(Main.VexView) {
-					player.sendMessage("§f§l请按下你需要绑定的按键");
+					
+					sendMoreMessage(player , Main.message.getLockKeyBoardMsg());
+					
 				}else {
-					player.sendMessage("§f§l请打开背包左击未绑定技能的技能槽");
-					player.sendMessage("§f§l打开背包右击1-9格空的物品栏可添加技能槽");
+					
+					sendMoreMessage(player , Main.message.getLockItemSlotMsg());
+					
 				}
 				
 			}else if(Main.VexView && lore.contains("§f绑定按键： §4§l") && event.getClick().equals(ClickType.RIGHT)) {
 				//右键可以解除绑定
 				OnlineData.getSPlayer(player).removeKeyBoardSkill( Main.skillsdata.get(name) );
-				player.sendMessage("§f§l成功解除绑定");
+				sendMoreMessage(player , Main.message.getUnlockMsg());
 				
 			}
 			
 			player.closeInventory();
 		}
 		
+		if(!Main.VexView) {
+			int slot = event.getSlot();
+			ItemStack item = inv.getItem(slot);
+			//不允许技能物品脱离背包
+			if(!(inv instanceof PlayerInventory && slot <= 8) && item != null && (item.equals(getNoSkillItem()) || isSkillItem(item))) {
+				inv.setItem(slot, null);
+				event.setCancelled(true);
+			}
+		}
 		
-		if(inv instanceof PlayerInventory && event.getSlot() <= 8 
-				&& !Main.VexView && event.getWhoClicked() instanceof Player) {
+		if(inv instanceof PlayerInventory && event.getSlot() <= 8 && !Main.VexView && event.getWhoClicked() instanceof Player) {
 			
 			//打开玩家背包进行绑定技能
 			handleSkillBindToItem(inv , event);
@@ -135,8 +147,8 @@ public class NumberBoardUse implements Listener{
 			
 			Player player = (Player) event.getWhoClicked();
 			ItemStack noskill = getNoSkillItem();
-			ItemStack clickitem = inv.getItem(event.getSlot());
 			int slot = event.getSlot();
+			ItemStack clickitem = inv.getItem(slot);
 			
 			//添加一个未绑定技能按钮
 			if(clickitem == null && event.getClick().equals(ClickType.RIGHT)) {
@@ -206,6 +218,12 @@ public class NumberBoardUse implements Listener{
 			return item.getItemMeta().getLore().get(0).equalsIgnoreCase("§f已绑定");
 		}
 		return false;
+	}
+	
+	private void sendMoreMessage(Player player , List<String> args) {
+		for(String arg : args) {
+			player.sendMessage(arg);
+		}
 	}
 
 }

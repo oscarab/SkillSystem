@@ -82,6 +82,11 @@ public class ConfigHandle {
 		}
   }
   
+  //载入消息
+  public void loadMessage() {
+	  
+  }
+  
   //初始化加载玩家的按键情况
   public void loadPlayerYML(SPlayer player) throws IOException {
 	  

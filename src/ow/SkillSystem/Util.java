@@ -167,6 +167,22 @@ public class Util {
 	  });
   }
   
+  /**
+   * 将数字转换为逻辑比较符号
+   * @param sign
+   * @return 相应的比较符号
+   */
+  public String getSign(int sign) {
+	  switch(sign) {
+	  case -2: return "<";
+	  case -1: return "<=";
+	  case 0: return "=";
+	  case 1: return ">=";
+	  case 2: return ">";
+	  default: return null;
+	  }
+  }
+  
   //获取数字所对应的键盘字符
   private String getKeyChar(int key) {
 	  switch(key) {
