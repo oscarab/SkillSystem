@@ -12,6 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 import ow.SkillSystem.Main;
 import ow.SkillSystem.SpecialEffects.*;
 import ow.SkillSystem.data.OnlineData;
+import ow.SkillSystem.data.SPlayer;
 
 public class SkillEffect {   //技能实际效果
     @SuppressWarnings("unused")
@@ -19,7 +20,8 @@ public class SkillEffect {   //技能实际效果
     		"DamageSet","Damage","HealthSet",
     		"Shoot","Fire","Lightning",
     "Pull","PushBack","Message","ParticleEffect","SoundEffect",
-    "Jump","Explosion","DamagedSet","Command","Goto"};
+    "Jump","Explosion","DamagedSet","Command", "Goto",
+    "AttributeSet", "AttributeRemove","CoolDownSet"};
     private String effect;
     
     //半成品的数字，尚未进行处理，仍为算式形式
@@ -45,6 +47,9 @@ public class SkillEffect {   //技能实际效果
     //抛射物效果
     private ProjectileEffect projectile;
     
+    //属性点
+    private String attribute;
+    
     //跳转效果
     private int packet = 0;
     private int line = 1;
@@ -63,6 +68,11 @@ public class SkillEffect {   //技能实际效果
     		setAboutProjectile(part.split(":"));
     	}else if(part.startsWith("Goto")) {
     		setGoto(part.split(":"));
+    	}else if(part.equalsIgnoreCase("AttributeRemove")) {
+    		effect = "AttributeRemove";
+    		attribute = "Attribute."+part.split(":")[1];
+    	}else if(part.startsWith("AttributeSet") || part.startsWith("CoolDownSet")) {
+    		setAboutAttribute(part.split(":"));
     	}else if(part.contains(":")){
     		setAboutNumber(part.split(":"));
     	}
@@ -122,6 +132,17 @@ public class SkillEffect {   //技能实际效果
     	projectile = new ProjectileEffect(parts[1] , parts[2] , parts[3]);
     	effect = "Shoot";
     	
+    }
+    
+    //处理属性点与技能冷却设置
+    private void setAboutAttribute(String[] parts) {
+    	effect = parts[0];
+    	if(parts[0].contains("Attribute")) {
+        	attribute = "Attribute."+parts[1];
+    	}else {
+        	attribute = parts[1];
+    	}
+    	examount = parts[2];
     }
     
     //处理跳转效果
@@ -319,6 +340,45 @@ public class SkillEffect {   //技能实际效果
     				
     			}
     			
+    		}
+    	}
+    	//属性点设置
+    	else if(effect.equalsIgnoreCase("AttributeSet")) {
+    		
+    		for(LivingEntity entity : entities) {
+    			if(entity instanceof Player) {
+    				
+    				SPlayer splayer = OnlineData.getSPlayer((Player) entity);
+    				splayer.setAttribute(attribute, splayer.getAttribute(attribute) + Main.util.getIntNumber(examount, user));
+    				
+    			}
+    		}
+    		
+    	}
+    	//属性点删除
+    	else if(effect.equalsIgnoreCase("AttributeRemove")) {
+    		
+    		for(LivingEntity entity : entities) {
+    			if(entity instanceof Player) {
+    				
+    				SPlayer splayer = OnlineData.getSPlayer((Player) entity);
+    				splayer.removeAttribute(attribute);
+    				
+    			}
+    		}
+    		
+    	}
+    	//技能冷却调整
+    	else if(effect.equalsIgnoreCase("CoolDownSet")) {
+    		
+    		for(LivingEntity entity : entities) {
+    			if(entity instanceof Player) {
+    			
+    				SPlayer splayer = OnlineData.getSPlayer((Player) entity);
+    				Skill skill = Main.skillsdata.get(attribute);
+    				splayer.setCoolDown(skill, splayer.getCoolDown(skill) + Main.util.getIntNumber(examount, user));
+    				
+    			}
     		}
     	}
     	

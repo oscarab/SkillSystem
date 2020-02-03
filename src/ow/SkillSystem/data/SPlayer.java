@@ -33,12 +33,42 @@ public class SPlayer {
    //按键所对应的技能
    private HashMap<Integer , Skill> keyBoard = new HashMap<>();
    
+   //属性点
+   private HashMap<String, Integer> attribute = new HashMap<>();
+   
    public SPlayer(Player p) {
 	   uuid = p.getUniqueId();
    }
    
    public Player getPlayer() {
 	   return Bukkit.getPlayer(uuid);
+   }
+   
+   //增加或设置属性点
+   public void setAttribute(String name, int point) {
+	   attribute.put(name, point);
+   }
+   
+   //移除属性点
+   public void removeAttribute(String name) {
+	   if(attribute.get(name) != null) {
+		   attribute.put(name, null);
+	   }
+   }
+   
+   //获取对应的属性点
+   public int getAttribute(String name) {
+	   return attribute.get(name) == null? 0 : attribute.get(name);
+   }
+   
+   //设置技能冷却
+   public void setCoolDown(Skill skill, int time) {
+	   skills.put(skill, time);
+   }
+   
+   //获取技能冷却
+   public int getCoolDown(Skill skill) {
+	   return skills.get(skill) == null? 0 : skills.get(skill);
    }
    
    //新添技能对应的按键
@@ -81,11 +111,11 @@ public class SPlayer {
 	   }
    }
    
-   //保存键盘情况
-   public void saveKeyBoard(){
+   //保存键盘情况与属性点
+   public void saveData(){
 	   
 	   try {
-		Main.handle.savePlayerYML(keyBoard , getPlayer());
+		Main.handle.savePlayerYML(keyBoard, attribute , getPlayer());
 	} catch (IOException e) {
 		e.printStackTrace();
 	}
@@ -107,6 +137,7 @@ public class SPlayer {
 		   return;
 	   }
 	   
+	   //检查是否在领地内
 	   if(Main.Residence) {
 		   Location loc = player.getLocation();
 		   ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(loc);
@@ -121,6 +152,7 @@ public class SPlayer {
 		   
 	   }
 	   
+	   //检查是否冷却完毕
 	   if(!isSkillCooldown(skill)) {
 		   skills.put(skill, skill.getCooldown());
 		   

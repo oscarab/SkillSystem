@@ -39,7 +39,7 @@ public class PlayerListener implements Listener{
 		Player p = e.getPlayer();
 		
 		//玩家按键信息保存
-		OnlineData.players.get(p.getUniqueId()).saveKeyBoard();
+		OnlineData.players.get(p.getUniqueId()).saveData();
 		
 		OnlineData.players.remove(p.getUniqueId());
 	}

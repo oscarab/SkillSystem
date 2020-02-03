@@ -11,7 +11,7 @@ import ow.SkillSystem.Main;
 
 public class SkillTarget {      //技能释放的对象
 	
-	//PointEntity,RaduisEntity,Self,LineEntity
+	//PointEntity,RaduisEntity,Self,LineEntity, PointMob, RaduisMob, LineMob
 	private String target;
 	private String distance;
 	
@@ -41,30 +41,47 @@ public class SkillTarget {      //技能释放的对象
 			
 			entities.add(self);
 			
-		}else if(target.equalsIgnoreCase("RaduisEntity")) {
+		}else if(target.startsWith("Raduis")) {
 			  
 			double radius = Main.util.getDoubleNumber(distance, self);
 			
 			for(Entity entity : self.getNearbyEntities(radius, radius, radius)) {
-				if(entity instanceof LivingEntity) {
+				if(entity instanceof LivingEntity && target.endsWith("Entity")) {
+					  entities.add((LivingEntity) entity);
+				}else if(!(entity instanceof Player) && target.endsWith("Mob")) {
 					  entities.add((LivingEntity) entity);
 				}
 			}
 			  
-		}else if(target.equalsIgnoreCase("PointEntity")){
+		}else if(target.startsWith("Point")){
 			
 			SkillUtil sutil = new SkillUtil();
 			double distance = Main.util.getDoubleNumber(this.distance, self);
 			LivingEntity entity = sutil.getTargetEntity(self, distance);
 			
-			if(entity != null) entities.add(entity);
+			if(entity != null) {
+				if(target.endsWith("Entity")) {
+					entities.add(entity);
+				}else if(!(entity instanceof Player) && target.endsWith("Mob")) {
+					entities.add(entity);
+				}
+			}
 			
-		}else if(target.equalsIgnoreCase("LineEntity")) {
+		}else if(target.startsWith("Line")) {
 			
 			SkillUtil sutil = new SkillUtil();
 			double distance = Main.util.getDoubleNumber(this.distance, self);
+			List<LivingEntity> args = sutil.getLineEntity(self, distance);
 			
-			entities.addAll(sutil.getLineEntity(self, distance));
+			if(target.endsWith("Entity")) {
+				entities.addAll(args);
+			}else if(target.endsWith("Mob")){
+				for(LivingEntity entity : args) {
+					if(!(entity instanceof Player)) {
+						entities.add(entity);
+					}
+				}
+			}
 			
 		}
 		  

@@ -1,8 +1,10 @@
 package ow.SkillSystem.data;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,6 +29,11 @@ public class OnlineData {
 	
 	//玩家绑定技能的标记
 	public static Map<UUID , String> playersetkey = Collections.synchronizedMap(new HashMap<>());
+	
+	//基础属性点设置
+	public static List<String> baseAttributeName = new ArrayList<String>();
+	public static Map<String, Integer> baseAttributeTimer = Collections.synchronizedMap(new HashMap<>());
+	public static Map<String, Integer> baseAttributeMax = Collections.synchronizedMap(new HashMap<>());
 	
 	/*==================================================================================*/
 	

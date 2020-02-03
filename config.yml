@@ -1,0 +1,6 @@
+Attribute:
+  List:
+  - Mana
+  Mana:
+    Timer: 1000
+    Max: 100

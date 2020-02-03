@@ -64,6 +64,7 @@ public class Main extends JavaPlugin{
 			message = new Message();
 			
 			handle = new ConfigHandle();
+			handle.loadConfig();
 			handle.loadItems();
 			handle.loadSkills();
 			Bukkit.getConsoleSender().sendMessage("§2配置文件加载成功！");
@@ -85,7 +86,7 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
-		Bukkit.getConsoleSender().sendMessage("§2技能系统启动完成！当前版本:§4v1.5.2");
+		Bukkit.getConsoleSender().sendMessage("§2技能系统启动完成！当前版本:§4v1.5.3");
 		Bukkit.getConsoleSender().sendMessage("§2============= §9SkillSystem > §2Finishing §2=============");
 	}
 	
@@ -116,7 +117,7 @@ public class Main extends JavaPlugin{
 			Player p = itn.next();
 			SPlayer player = OnlineData.getSPlayer(p);
 			
-			player.saveKeyBoard();
+			player.saveData();
 		}
 	}
 
@@ -139,6 +140,15 @@ public class Main extends JavaPlugin{
 		pthread.start();
 		dthread.start();
 		ddthread.start();
+		
+		//基础属性点处理
+		Iterator<String> itn = OnlineData.baseAttributeTimer.keySet().iterator();
+		while(itn.hasNext()) {
+			String attr = itn.next();
+			Thread thread = new AttributeThread(attr,OnlineData.baseAttributeTimer.get(attr),OnlineData.baseAttributeMax.get(attr));
+			
+			thread.start();
+		}
 	}
 	
 	public boolean onCommand(CommandSender sender,Command cmd,String Label,String[] args){

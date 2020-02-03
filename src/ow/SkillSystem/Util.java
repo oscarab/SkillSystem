@@ -55,6 +55,11 @@ public class Util {
 
   }
   
+  /**
+   * 将逻辑比较符转换为数字
+   * @param part 符号字符串
+   * @return 相应的数字
+   */
   public int getSign(String part) {
 	  if(part.contains(">=")) {
 		  return 1;
