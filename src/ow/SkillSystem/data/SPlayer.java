@@ -61,6 +61,11 @@ public class SPlayer {
 	   return attribute.get(name) == null? 0 : attribute.get(name);
    }
    
+   //判断属性点是否存在
+   public boolean isAttribute(String name) {
+	   return attribute.get(name) != null;
+   }
+   
    //设置技能冷却
    public void setCoolDown(Skill skill, int time) {
 	   skills.put(skill, time);

@@ -16,7 +16,7 @@ public class SkillCondition {
 	private String[] conditions = {"SelfHealth","EveryAttacking",
     "EveryKilling","TargetHealth","ItemConsuming","OnAir",
     "ItemHas","NextAtttacking","NextKilling","Run","Storm","Time","Biome",
-    "Probability","HasPointEntity","HasRaduisEntity","Equation","Attribute","None"};
+    "Probability","HasPointEntity","HasRaduisEntity","Equation","None"};
     
     private String condition;
     
@@ -56,7 +56,7 @@ public class SkillCondition {
     		setAboutProbability(part);
     	}else if(part.contains("Entity")) {
     		setAboutEntity(part);
-    	}else if(part.startsWith("Equation") || part.startsWith("Attribute")){
+    	}else if(part.startsWith("Equation")){
     		setAboutEquation(part);
     	}
     	else {
@@ -216,16 +216,6 @@ public class SkillCondition {
     		double right = Main.util.getDoubleNumber(equation[1], self);
     		
     		return compare(left , right);
-    		
-    	}
-    	//属性点要求
-    	else if(condition.equalsIgnoreCase("Attribute")) {
-    		
-    		if(target instanceof Player) {
-    			int attr = OnlineData.getSPlayer((Player) target).getAttribute("Attribute."+equation[0]);
-    			int num = Integer.parseInt(equation[1]);
-    			return compare(attr,num);
-    		}
     		
     	}
     	//无条件
