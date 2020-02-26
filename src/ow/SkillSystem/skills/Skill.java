@@ -56,8 +56,13 @@ public class Skill {
 	  return name;
   }
   
-  public List<String> getDescription() {
-	  return description;
+  public List<String> getDescription(Player player) {
+	  List<String> res = new ArrayList<>();
+	  res.addAll(description);
+	  for(int i = 0; i < res.size(); i++) {
+		  res.set(i, Main.util.replaceAPI(res.get(i), player));
+	  }
+	  return res;
   }
   
   //是否可用键盘触发

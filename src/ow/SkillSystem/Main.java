@@ -88,7 +88,7 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
-		Bukkit.getConsoleSender().sendMessage("§2技能系统启动完成！当前版本:§4v1.5.4");
+		Bukkit.getConsoleSender().sendMessage("§2技能系统启动完成！当前版本:§4v1.5.5");
 		Bukkit.getConsoleSender().sendMessage("§2============= §9SkillSystem > §2Finishing §2=============");
 	}
 	

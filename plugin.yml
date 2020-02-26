@@ -1,6 +1,6 @@
 name: SkillSystem
 author: Oscar_Wen
-version: 1.5.4
+version: 1.5.5
 main: ow.SkillSystem.Main
 softdepend: [VexView,PlaceholderAPI,Residence]
 commands:

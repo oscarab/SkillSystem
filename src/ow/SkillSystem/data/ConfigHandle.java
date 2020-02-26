@@ -107,17 +107,17 @@ public class ConfigHandle {
 		while(itn.hasNext()) {
 			
 			String key = itn.next();
-			//按键后面是属性点的记录
 			if(key.equalsIgnoreCase("Attribute")) {
 				attribute = true;
 				continue;
 			}
 			
-			if(attribute) {
+			if(key.startsWith("Attribute")) {
 				player.setAttribute(key, playeryml.getInt(key));
 			}else {
 				player.addKeyBoardSetting(Integer.parseInt(key), Main.skillsdata.get(playeryml.getString(key)));
 			}
+			
 			
 		}
 		
