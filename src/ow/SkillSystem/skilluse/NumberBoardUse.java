@@ -1,17 +1,21 @@
 package ow.SkillSystem.skilluse;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import ow.SkillSystem.Main;
 import ow.SkillSystem.data.OnlineData;
 
+//传统背包栏技能触发
 public class NumberBoardUse implements Listener{
 	
 	//监听技能绑定方面的按下
@@ -103,18 +108,6 @@ public class NumberBoardUse implements Listener{
 			 }
 		}
 		
-		//在VexView开启时清除数字键触发技能的物品
-		if(Main.VexView) {
-			PlayerInventory inv = player.getInventory();
-			
-			for(int i = 0 ; i < 9 ; i++) {
-				if(inv.getItem(i) != null && (inv.getItem(i).equals(getNoSkillItem()) || isSkillItem(inv.getItem(i)))) {
-					inv.setItem(i, null);
-				}
-			}
-			
-		}
-		
 	}
 	
 	@EventHandler
@@ -129,7 +122,7 @@ public class NumberBoardUse implements Listener{
 	
 	@EventHandler
 	public void onDie(PlayerDeathEvent event) {
-		//防止掉落技能方面的物品
+		//防止死亡时掉落技能方面的物品
 		List<ItemStack> items = event.getDrops();
 		List<ItemStack> itemsremove = new ArrayList<>();
 		
@@ -140,6 +133,38 @@ public class NumberBoardUse implements Listener{
 		}
 		items.removeAll(itemsremove);
 		
+	}
+	
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		//防止技能物品被放置出来
+		ItemStack item = event.getItem();
+		
+		if(!Main.VexView && item != null) {
+			
+			if(item.equals(getNoSkillItem())) {
+				PlayerInventory inv = event.getPlayer().getInventory();
+				inv.setItemInMainHand(null);
+				event.setCancelled(true);
+			}
+			
+		}
+	}
+	
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+		//在VexView开启时清除数字键触发技能的物品
+		if(Main.VexView) {
+			Player player = event.getPlayer();
+			PlayerInventory inv = player.getInventory();
+			
+			for(int i = 0 ; i < 9 ; i++) {
+				if(inv.getItem(i) != null && (inv.getItem(i).equals(getNoSkillItem()) || isSkillItem(inv.getItem(i)))) {
+					inv.setItem(i, null);
+				}
+			}
+			
+		}
 	}
 	
 	private void handleSkillBindToItem(Inventory inv , InventoryClickEvent event) {

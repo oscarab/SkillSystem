@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -187,7 +189,7 @@ public class SkillEffect {   //技能实际效果
     	//伤害效果
     	else if(effect.equalsIgnoreCase("Damage")) {
     		for(LivingEntity entity : entities) {
-    			entity.damage(amount);
+    			entity.damage(amount, user);
     		}
     	}
     	//着火
@@ -200,9 +202,8 @@ public class SkillEffect {   //技能实际效果
     	else if(effect.equalsIgnoreCase("Lightning")) {
     		for(LivingEntity entity : entities) {
     			
-    			for(int i = 0 ; i< amount ; i++) {
-        			entity.getWorld().strikeLightning(entity.getLocation());
-    			}
+        		entity.getWorld().strikeLightningEffect(entity.getLocation());
+        		entity.damage(amount, user);
 
     		}
     	}
@@ -293,7 +294,8 @@ public class SkillEffect {   //技能实际效果
     	else if(effect.equalsIgnoreCase("Explosion")) {
     		for(LivingEntity entity : entities) {
     			Location loc = entity.getLocation();
-    			entity.getWorld().createExplosion(loc.getX() , loc.getY() , loc.getZ() , (float) amount , false , false);
+    			entity.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc.getX(), loc.getY(), loc.getZ(), 2);
+    			entity.damage(amount, user);
     		}
     	}
     	//强行调整[所受]的伤害
