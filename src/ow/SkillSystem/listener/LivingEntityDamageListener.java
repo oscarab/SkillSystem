@@ -22,7 +22,9 @@ public class LivingEntityDamageListener implements Listener{
 			
 			event.setDamage(damageset < 0 ? 0 : damageset);
 			
-		}else if(event.getDamager() instanceof Projectile){
+		}
+		//抛射物伤害设定
+		else if(event.getDamager() instanceof Projectile){
 			
 			Projectile projectile = (Projectile) event.getDamager();
 			

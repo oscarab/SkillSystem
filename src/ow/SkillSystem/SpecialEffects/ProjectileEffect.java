@@ -2,6 +2,7 @@ package ow.SkillSystem.SpecialEffects;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Arrow.PickupStatus;
 import org.bukkit.entity.DragonFireball;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Fireball;
@@ -47,6 +48,10 @@ public class ProjectileEffect {
     	case "DragonFireball": projectile = entity.getWorld().spawn(shootloc , DragonFireball.class);break;
     	case "Egg": projectile = entity.getWorld().spawn(shootloc , Egg.class);break;
     	case "ThrownExpBottle": projectile = entity.getWorld().spawn(shootloc, ThrownExpBottle.class);break;
+    	}
+    	
+    	if(projectile instanceof Arrow) {
+    		((Arrow) projectile).setPickupStatus(PickupStatus.DISALLOWED);
     	}
     	
     	if(projectile != null) {

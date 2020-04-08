@@ -15,11 +15,11 @@ import org.bukkit.entity.Projectile;
 public class OnlineData {
 	
 	//调整打出的伤害    格式：   生物/伤害设置/持续时间  正数是增加伤害，负数是减少
-	public static Map<LivingEntity,String> damageset = Collections.synchronizedMap(new HashMap<>());
+	private static Map<LivingEntity,String> damageset = Collections.synchronizedMap(new HashMap<>());
 	
 	//调整所受的伤害   格式：   生物/伤害设置/持续时间      
 	//若为0则是无敌，正数是增加所受伤害，负数是减少所受伤害
-	public static Map<LivingEntity, String> damagedset = Collections.synchronizedMap(new HashMap<>());
+	private static Map<LivingEntity, String> damagedset = Collections.synchronizedMap(new HashMap<>());
 	
 	//抛射物伤害标记
 	public static HashMap<Projectile , Double> projectiledamage = new HashMap<>();

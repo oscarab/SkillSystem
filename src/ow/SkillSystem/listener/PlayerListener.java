@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import ow.SkillSystem.Main;
+import ow.SkillSystem.UpdateCheck;
 import ow.SkillSystem.data.OnlineData;
 import ow.SkillSystem.data.SPlayer;
 
@@ -32,6 +33,11 @@ public class PlayerListener implements Listener{
 		}
 		
 		OnlineData.players.put(p.getUniqueId(), player);
+		
+		//如果进入玩家为op则检查插件版本
+		if(p.isOp()) {
+			new UpdateCheck().check(p);
+		}
 	}
 	
 	@EventHandler

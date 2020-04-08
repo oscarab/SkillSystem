@@ -5,14 +5,15 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import ow.SkillSystem.Main;
 import ow.SkillSystem.SpecialEffects.*;
+import ow.SkillSystem.SpecialEffects.ParticleEffect.ParticleEffect;
 import ow.SkillSystem.data.OnlineData;
 import ow.SkillSystem.data.SPlayer;
 
@@ -174,7 +175,7 @@ public class SkillEffect {   //技能实际效果
      * @param duration 持续时间（非必要）
      */
     public void run(List<LivingEntity> entities , Player user , int duration) {
-    	
+  	
     	SkillUtil skillutil = new SkillUtil();
     	//将未处理的算式进行处理
     	double amount = Main.util.getDoubleNumber(examount, user);
@@ -189,7 +190,7 @@ public class SkillEffect {   //技能实际效果
     	//伤害效果
     	else if(effect.equalsIgnoreCase("Damage")) {
     		for(LivingEntity entity : entities) {
-    			entity.damage(amount, user);
+    			entity.damage(amount);
     		}
     	}
     	//着火
@@ -203,7 +204,7 @@ public class SkillEffect {   //技能实际效果
     		for(LivingEntity entity : entities) {
     			
         		entity.getWorld().strikeLightningEffect(entity.getLocation());
-        		entity.damage(amount, user);
+        		entity.damage(amount);
 
     		}
     	}
@@ -224,7 +225,8 @@ public class SkillEffect {   //技能实际效果
     			if(health + amount < 0) {
         			entity.setHealth(0);
     			}else {
-        			Double afterh = health + amount > entity.getMaxHealth()? entity.getMaxHealth(): health + amount;
+    				Double maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        			Double afterh = health + amount > maxHealth? maxHealth: health + amount;
         			entity.setHealth(afterh);
     			}
     			
@@ -235,7 +237,7 @@ public class SkillEffect {   //技能实际效果
     	else if(effect.equalsIgnoreCase("DamageSet")) {
     		for(LivingEntity entity : entities) {
     			
-    			if(OnlineData.damageset.get(entity) == null) {
+    			if(OnlineData.getDamaged(entity) == null) {
         			OnlineData.addDamageSet(entity, amount, duration);
     			}else {
         			OnlineData.setDamageSet(entity, amount);
@@ -294,15 +296,15 @@ public class SkillEffect {   //技能实际效果
     	else if(effect.equalsIgnoreCase("Explosion")) {
     		for(LivingEntity entity : entities) {
     			Location loc = entity.getLocation();
-    			entity.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc.getX(), loc.getY(), loc.getZ(), 2);
-    			entity.damage(amount, user);
+    			entity.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc.getX(), loc.getY(), loc.getZ(), 1);
+    			entity.damage(amount);
     		}
     	}
     	//强行调整[所受]的伤害
     	else if(effect.equalsIgnoreCase("DamagedSet")) {
     		for(LivingEntity entity : entities) {
     			
-    			if(OnlineData.damagedset.get(entity) == null) {
+    			if(OnlineData.getDamaged(entity) == null) {
         			OnlineData.addDamagedSet(entity, amount, duration);
     			}else {
         			OnlineData.setDamagedSet(entity, amount);

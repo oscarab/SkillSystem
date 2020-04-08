@@ -8,7 +8,6 @@ import org.bukkit.inventory.PlayerInventory;
 
 import ow.SkillSystem.Main;
 import ow.SkillSystem.Util;
-import ow.SkillSystem.data.OnlineData;
 
 public class SkillCondition { 
 	//触发技能的条件

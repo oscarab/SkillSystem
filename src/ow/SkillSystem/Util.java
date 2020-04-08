@@ -27,7 +27,9 @@ public class Util {
   public double getDoubleNumber(String part ,Player p){
 	  ScriptEngine se = new ScriptEngineManager().getEngineByName("js");
 	  
-	  part = replaceAPI(part , p);
+	  part = useMathFunction(part);
+	  if(p != null)
+		  part = replaceAPI(part , p);
 
 	  try {
 		return Double.parseDouble(se.eval(part).toString());
@@ -42,7 +44,10 @@ public class Util {
   
   public int getIntNumber(String part , Player p) {
 	  ScriptEngine se = new ScriptEngineManager().getEngineByName("js");
-	  part = replaceAPI(part , p);
+	  
+	  part = useMathFunction(part);
+	  if(p != null)
+		  part = replaceAPI(part , p);
 	  
 	  try {
 		return (int) Double.parseDouble(se.eval(part).toString());
@@ -53,6 +58,18 @@ public class Util {
 	}
 	  return 0;
 
+  }
+  
+  /**
+   * 替换字符串中的数学各种函数，使其可以发挥作用
+   * @return
+   */
+  public String useMathFunction(String part) {
+	  String funcs[] = new String[] {"cos", "sin", "tan", "atan", "asin", "acos", "log", "random", "sqrt", "pow", "abs", "max", "min"};
+	  for(String f : funcs) {
+		  part.replace(f, "Math." + f);
+	  }
+	  return part;
   }
   
   /**
