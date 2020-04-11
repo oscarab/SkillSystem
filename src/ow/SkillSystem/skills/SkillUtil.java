@@ -54,7 +54,7 @@ public class SkillUtil {
 	 */
 	public void charge(LivingEntity entity , double length) {
 		Vector sight = entity.getEyeLocation().getDirection().clone();
-		entity.setVelocity(sight.multiply(length));
+		entity.setVelocity(sight.multiply(length).setY(0.01D));
 	}
 	
 	

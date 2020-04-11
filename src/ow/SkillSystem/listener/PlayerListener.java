@@ -14,9 +14,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import ow.SkillSystem.Main;
-import ow.SkillSystem.UpdateCheck;
 import ow.SkillSystem.data.OnlineData;
 import ow.SkillSystem.data.SPlayer;
+import ow.SkillSystem.net.UpdateCheck;
 
 public class PlayerListener implements Listener{
 	

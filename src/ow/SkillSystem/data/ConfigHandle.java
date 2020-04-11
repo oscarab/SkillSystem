@@ -17,8 +17,10 @@ import ow.SkillSystem.skills.Skill;
 
 //配置文件处理
 public class ConfigHandle {
-  private File skills;
-  private YamlConfiguration skillsyml;
+  private File skills[];
+  private YamlConfiguration skillsyml[];
+  private File particle[];
+  private YamlConfiguration particleyml[];
   private File items;
   private YamlConfiguration itemsyml;
   private File config;
@@ -27,11 +29,26 @@ public class ConfigHandle {
   
   public ConfigHandle() throws IOException {
 	  //技能
-		skills = new File("./plugins/SkillSystem/skills.yml");
-		skillsyml = YamlConfiguration.loadConfiguration(skills);
-		if(!skills.exists()) {
-			skillsyml.save(skills);
+	    File skillfile = new File("./plugins/SkillSystem/Skills/");
+	    if(!skillfile.exists()){
+	    	Main.plugin.saveResource("Skills/SkillExample.yml", false);
+	    }
+		skills = skillfile.listFiles();
+		skillsyml = new YamlConfiguration[skills.length];
+		for(int i = 0; i < skills.length; i++) {
+			skillsyml[i] = YamlConfiguration.loadConfiguration(skills[i]);
 		}
+		
+		//粒子
+	    /*File particlefile = new File("./plugins/SkillSystem/Particle/");
+	    if(!particlefile.exists()){
+	    	Main.plugin.saveResource("Skills/ParticleExample.yml", false);
+	    }
+		particle = skillfile.listFiles();
+		particleyml = new YamlConfiguration[particle.length];
+		for(int i = 0; i < skills.length; i++) {
+			particleyml[i] = YamlConfiguration.loadConfiguration(particle[i]);
+		}*/
 		
 		//物品
 		items = new File("./plugins/SkillSystem/items.yml");
@@ -50,25 +67,41 @@ public class ConfigHandle {
   
   //载入技能文件
   public void loadSkills() {
-		Iterator<String> itn = skillsyml.getKeys(false).iterator();
-		while(itn.hasNext()) {
-			String key = itn.next();
-			int cooldown = skillsyml.getInt(key+".cooldown");
-			boolean np = skillsyml.getBoolean(key+".needPermission");
-			boolean ck = skillsyml.getBoolean(key+".cankeyBoard");
-			String msg = skillsyml.getString(key+".message");
-			List<String> worlds = skillsyml.getStringList(key+".banWorlds");
-			List<String> description = skillsyml.getStringList(key+".description");
-			int packet = skillsyml.getInt(key+".packet");
+	  for(int i = 0; i < skills.length; i++) {
+		  
+			Iterator<String> itn = skillsyml[i].getKeys(false).iterator();
+			while(itn.hasNext()) {
+				String key = itn.next();
+				int cooldown = skillsyml[i].getInt(key+".cooldown");
+				boolean np = skillsyml[i].getBoolean(key+".needPermission");
+				boolean ck = skillsyml[i].getBoolean(key+".cankeyBoard");
+				String msg = skillsyml[i].getString(key+".message");
+				List<String> worlds = skillsyml[i].getStringList(key+".banWorlds");
+				List<String> description = skillsyml[i].getStringList(key+".description");
+				int packet = skillsyml[i].getInt(key+".packet");
+				
+				Skill skill = new Skill(key , cooldown ,np , msg , ck , worlds , description);
+				for(int j = 1 ; j <= packet ; j++) {
+					skill.setExecution(skillsyml[i].getStringList(key+".executionPacket"+j));
+				}
+				
+				Main.skillsdata.put(key,skill);
+				Main.skills.add(skill);
+			}
+		  
+	  }
+  }
+  
+  //载入粒子文件
+  public void loadParticle() {
+	  for(int i = 0; i < particle.length; i++) {
+			Iterator<String> itn = skillsyml[i].getKeys(false).iterator();
 			
-			Skill skill = new Skill(key , cooldown ,np , msg , ck , worlds , description);
-			for(int i = 1 ; i <= packet ; i++) {
-				skill.setExecution(skillsyml.getStringList(key+".executionPacket"+i));
+			while(itn.hasNext()) {
+				String key = itn.next();
 			}
 			
-			Main.skillsdata.put(key,skill);
-			Main.skills.add(skill);
-		}
+	  }
   }
   
   //载入物品

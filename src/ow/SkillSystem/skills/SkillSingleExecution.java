@@ -109,9 +109,9 @@ public class SkillSingleExecution {
 				  
 			  }
 			  
-		  }else if(entities.size() > 0) {
+		  }else{
 			  
-			  if(condition.check(self, self)) {
+			  if(condition.check(self, self) && entities.size() > 0) {
 				  
 				  //涉及到跳转效果
 				  if(effect.getEffect().equalsIgnoreCase("Goto")) {

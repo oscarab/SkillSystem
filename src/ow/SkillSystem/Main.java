@@ -19,6 +19,7 @@ import ow.SkillSystem.data.Message;
 import ow.SkillSystem.data.OnlineData;
 import ow.SkillSystem.data.SPlayer;
 import ow.SkillSystem.listener.*;
+import ow.SkillSystem.net.MetricsLite;
 import ow.SkillSystem.placeholderExpansion.PlaceholderExtend;
 import ow.SkillSystem.skills.Skill;
 import ow.SkillSystem.skilluse.*;
@@ -46,7 +47,7 @@ public class Main extends JavaPlugin{
 	public void onEnable() {
 		plugin = this;
 		util = new Util();
-		version = "1.5.7";
+		version = plugin.getDescription().getVersion();
 		
 		Bukkit.getConsoleSender().sendMessage("§2============= §9SkillSystem > §4Loading§2 =============");
 		//检测前置插件
@@ -90,7 +91,9 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
-		Bukkit.getConsoleSender().sendMessage("§2技能系统启动完成！当前版本:§4v1.5.7");
+		MetricsLite metrics = new MetricsLite(this);
+		
+		Bukkit.getConsoleSender().sendMessage("§2技能系统启动完成！当前版本:§4v"+version);
 		Bukkit.getConsoleSender().sendMessage("§2============= §9SkillSystem > §2Finishing §2=============");
 	}
 	

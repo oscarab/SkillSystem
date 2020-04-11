@@ -1,4 +1,4 @@
-package ow.SkillSystem;
+package ow.SkillSystem.net;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,9 +23,12 @@ import javax.net.ssl.X509TrustManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
+import ow.SkillSystem.Main;
+
 public class UpdateCheck {
 	
 	private InputStream input;
+	private String newVersion = null;
 	
 	public UpdateCheck() {
 		try {
@@ -50,7 +53,7 @@ public class UpdateCheck {
 	}
 	
 	//获取最新版本号并对比
-	public boolean isNewVersion(String version) {
+	public void isNewVersion(String version) {
 		try {
 			
 			BufferedReader reader = new BufferedReader(new InputStreamReader(input, "UTF-8"));
@@ -60,17 +63,13 @@ public class UpdateCheck {
 				if(!line.contains("version"))
 					continue;
 				
-				if(line.contains(version)) {
-					return true;
-				}
+				newVersion = line.split(": ")[1].substring(0,5);
+				break;
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			Bukkit.getConsoleSender().sendMessage("出现错误！无法获取最新版本信息！");
-			return true;
 		}
-		return false;
 	}
 	
 	public void check(CommandSender sender) {
@@ -78,7 +77,10 @@ public class UpdateCheck {
 
 			public void run() {
 				sender.sendMessage("§a============= §9SkillSystem > §c更新检查§a =============");
-				if(isNewVersion(Main.version)) {
+				isNewVersion(Main.version);
+				if(newVersion == null) {
+					sender.sendMessage("§9 > §c获取最新版本失败！");
+				}else if(newVersion.equals(Main.version)) {
 					sender.sendMessage("§9 > §a当前已经是最新版本！");
 				}else {
 					sender.sendMessage("§9 > §b发现新版本，请前往以下网址更新！");

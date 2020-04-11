@@ -1,0 +1,14 @@
+example:
+  description:
+    - '你的魔法值为：%SkillSystem_Mana%'
+  cooldown: 0
+  packet: 2                       #共有几个技能包，需要与下面的你写的技能包数量一致
+  executionPacket1:               #第一个技能包
+    - 'None#Self#Charge:2#0'
+    - 'Delay:20'
+    - 'HasPointEntity:3.0#PointEntity:3.0#Lightning:5#0#Goto:2:1'
+  executionPacket2:                     
+    - 'None#Self#Message:失败#0'
+  needPermission: false
+  cankeyBoard: true
+  message: §f冷却完成还有§5%cooldown%秒

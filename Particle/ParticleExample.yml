@@ -1,0 +1,7 @@
+example:
+  x: 3*cos(t)
+  y: 3*t
+  z: 2*cos(t)
+  parameter:
+  - t:0-100:0.1:0
+  adjustX: 0
