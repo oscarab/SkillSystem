@@ -10,10 +10,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -147,6 +150,12 @@ public class NumberBoardUse implements Listener{
 			}
 			
 		}
+	}
+	
+	@EventHandler
+	public void onMoveItem(PrepareAnvilEvent event) {
+		AnvilInventory anvil = event.getInventory();
+		anvil.remove(getNoSkillItem());
 	}
 	
 	@EventHandler

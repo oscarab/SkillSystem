@@ -26,6 +26,7 @@ public class ItemUse implements Listener{
 			ItemStack item = event.getItem();
 			if(item == null) return;
 			ItemMeta meta = item.getItemMeta();
+			if(meta == null) return;
 			List<String> lores = new ArrayList<>();
 			if(meta.getLore() == null) return;
 			lores.addAll(meta.getLore());
