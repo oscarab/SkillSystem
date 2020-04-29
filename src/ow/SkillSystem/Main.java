@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import ow.SkillSystem.SpecialEffects.ParticleEffect.ParticleCurve;
 import ow.SkillSystem.Thread.*;
 import ow.SkillSystem.data.ConfigHandle;
 import ow.SkillSystem.data.Message;
@@ -34,6 +35,8 @@ public class Main extends JavaPlugin{
 	
 	public static HashMap<String,Skill> skillsdata = new HashMap<>();
 	public static List<Skill> skills = new ArrayList<>();
+	
+	public static HashMap<String, ParticleCurve> particleEffect = new HashMap<>();
 	
 	public static HashMap<String,ItemStack> items = new HashMap<>();
 	
@@ -71,6 +74,7 @@ public class Main extends JavaPlugin{
 			handle = new ConfigHandle();
 			handle.loadConfig();
 			handle.loadItems();
+			handle.loadParticle();
 			handle.loadSkills();
 			Bukkit.getConsoleSender().sendMessage("§2配置文件加载成功！");
 		} catch (IOException e) {
@@ -92,6 +96,8 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new NumberBoardUse(), this);
 		
 		MetricsLite metrics = new MetricsLite(this);
+		if(metrics.isEnabled())
+			;
 		
 		Bukkit.getConsoleSender().sendMessage("§2技能系统启动完成！当前版本:§4v"+version);
 		Bukkit.getConsoleSender().sendMessage("§2============= §9SkillSystem > §2Finishing §2=============");

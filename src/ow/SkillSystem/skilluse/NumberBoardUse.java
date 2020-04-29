@@ -10,13 +10,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -36,13 +32,17 @@ public class NumberBoardUse implements Listener{
 		Inventory inv = event.getClickedInventory();
 		InventoryView view = event.getView();
 		if(inv == null || view == null) { return; }
+		
+		Player player = (Player) event.getWhoClicked();
+		
+		ItemStack item = inv.getItem(event.getSlot());
+		
+		if(isSkillItem(item) || getNoSkillItem().equals(item))
+			event.setCancelled(true);
 
 		if(view.getTitle().contains("[技能系统]按键绑定") && event.getWhoClicked() instanceof Player) {
 			
 			event.setCancelled(true);
-			
-			Player player = (Player) event.getWhoClicked();
-			ItemStack item = inv.getItem(event.getSlot());
 			if(item == null || !item.getItemMeta().hasLore() || item.getItemMeta().getLore().size() <2) return;
 			
 			String name = item.getItemMeta().getDisplayName();
@@ -71,17 +71,11 @@ public class NumberBoardUse implements Listener{
 			player.closeInventory();
 		}
 		
-		if(!Main.VexView) {
-			int slot = event.getSlot();
-			ItemStack item = inv.getItem(slot);
-			//不允许技能物品脱离背包
-			if(!(inv instanceof PlayerInventory && slot <= 8) && item != null && (item.equals(getNoSkillItem()) || isSkillItem(item))) {
-				inv.setItem(slot, null);
-				event.setCancelled(true);
-			}
-		}
-		
-		if(inv instanceof PlayerInventory && event.getSlot() <= 8 && !Main.VexView && event.getWhoClicked() instanceof Player) {
+		if(inv instanceof PlayerInventory 
+				&& event.getSlot() <= 8
+				&& !Main.VexView 
+				&& event.getWhoClicked() instanceof Player
+				&& event.getCursor().getType() == Material.AIR) {
 			
 			//打开玩家背包进行绑定技能
 			handleSkillBindToItem(inv , event);
@@ -137,25 +131,16 @@ public class NumberBoardUse implements Listener{
 	}
 	
 	@EventHandler
-	public void onInteract(PlayerInteractEvent event) {
-		//防止技能物品被放置出来
-		ItemStack item = event.getItem();
-		
-		if(!Main.VexView && item != null) {
-			
-			if(item.equals(getNoSkillItem())) {
-				PlayerInventory inv = event.getPlayer().getInventory();
-				inv.setItemInMainHand(null);
+	public void onMoveItem(InventoryClickEvent event) {
+		if(event.getClick().equals(ClickType.NUMBER_KEY) && event.getWhoClicked() instanceof Player) {
+			//防止玩家通过数字键移动技能物品
+			Player player = (Player) event.getWhoClicked();
+			ItemStack item = player.getInventory().getItem(event.getHotbarButton());
+
+			if(item != null && (item.equals(getNoSkillItem()) || isSkillItem(item))) {
 				event.setCancelled(true);
 			}
-			
 		}
-	}
-	
-	@EventHandler
-	public void onMoveItem(PrepareAnvilEvent event) {
-		AnvilInventory anvil = event.getInventory();
-		anvil.remove(getNoSkillItem());
 	}
 	
 	@EventHandler
@@ -245,7 +230,10 @@ public class NumberBoardUse implements Listener{
 	}
 	
 	private boolean isSkillItem(ItemStack item) {
-		if(item.getType().equals(Material.SLIME_BALL) && item.hasItemMeta() && item.getItemMeta().hasLore()) {
+		if(item != null 
+				&& item.getType().equals(Material.SLIME_BALL) 
+				&& item.hasItemMeta() 
+				&& item.getItemMeta().hasLore()) {
 			return item.getItemMeta().getLore().get(0).equalsIgnoreCase("§f已绑定");
 		}
 		return false;

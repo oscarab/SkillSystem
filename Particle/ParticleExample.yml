@@ -1,7 +1,9 @@
 example:
-  x: 3*cos(t)
-  y: 3*t
-  z: 2*cos(t)
+  x: 3*cos((t))
+  y: (t)
+  z: 2*sin((t))
   parameter:
-  - t:0-100:0.1:0
+  - t:0:6.28:0.05:0
   adjustX: 0
+  type: REDSTONE
+  color: 0,0,255

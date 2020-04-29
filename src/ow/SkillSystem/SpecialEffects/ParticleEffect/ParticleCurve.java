@@ -31,7 +31,6 @@ public class ParticleCurve {
 		}
 	}
 	
-	double x,y,z;
 	//参数方程
 	String equationX, equationY, equationZ;
 	//粒子类型
@@ -40,9 +39,11 @@ public class ParticleCurve {
 	Color color;
 	//参数列表
 	List<Parameter> parameters = new ArrayList<>();
+	//数量
+	int count;
 	
 	//初始化粒子曲线或曲面
-	public ParticleCurve(String eq1, String eq2, String eq3, List<String> paras, List<Integer> colors, String particle) {
+	public ParticleCurve(String eq1, String eq2, String eq3, List<String> paras, String colors, String particle, int count) {
 		equationX = eq1;
 		equationY = eq2;
 		equationZ = eq3;
@@ -58,29 +59,42 @@ public class ParticleCurve {
 			parameters.add(p);
 		}
 		
-		color = Color.fromRGB(colors.get(0), colors.get(1), colors.get(2));
+		String args[] = colors.split(",");
+		color = Color.fromRGB(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 		
 		this.particle = Particle.valueOf(particle);
-		
+		this.count = count;
 	}
 	
-	public void plays(World world) {
+	public void plays(World world, double x, double y, double z) {
 		Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, new Runnable() {
 
 			@Override
 			public void run() {
-				for(int i = 0; i < 100; i++) {
-					double j = i * ((3.1415926)/50);
-					double nx = x + Main.util.getDoubleNumber(equationX.replace("cost", ""+Math.cos(j)), null);
-					double ny = y + Main.util.getDoubleNumber(equationY.replace("t", ""+ j), null);
-					double nz = z + Main.util.getDoubleNumber(equationZ.replace("sint", ""+Math.sin(j)), null);
-					Location location = new Location(world, nx, ny, nz);
-					ParticleBuilder builder = new ParticleBuilder(Particle.REDSTONE);
-					builder.location(location);
-					builder.color(Color.ORANGE);
-					builder.count(0);
-					builder.spawn();
+				
+				for(Parameter para : parameters) {
+
+					for(double i = para.from; i <= para.to; i+=para.step) {
+						double nx = x + Main.util.getDoubleNumber(equationX.replace("("+para.parameter+")", "" + i), null);
+						double ny = y + Main.util.getDoubleNumber(equationY.replace("("+para.parameter+")", ""+ i), null);
+						double nz = z + Main.util.getDoubleNumber(equationZ.replace("("+para.parameter+")", "" + i), null);
+						Location location = new Location(world, nx, ny, nz);
+						ParticleBuilder builder = new ParticleBuilder(particle);
+						
+						builder.location(location);
+						builder.color(color);
+						builder.count(count);
+						builder.spawn();
+						
+						try {
+							Thread.sleep(para.delay);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						
+					}
 				}
+				
 			}
 			
 		});

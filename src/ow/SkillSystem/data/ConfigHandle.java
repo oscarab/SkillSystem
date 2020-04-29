@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import ow.SkillSystem.Main;
+import ow.SkillSystem.SpecialEffects.ParticleEffect.ParticleCurve;
 import ow.SkillSystem.skills.Skill;
 
 //配置文件处理
@@ -40,15 +42,15 @@ public class ConfigHandle {
 		}
 		
 		//粒子
-	    /*File particlefile = new File("./plugins/SkillSystem/Particle/");
+	    File particlefile = new File("./plugins/SkillSystem/Particle/");
 	    if(!particlefile.exists()){
-	    	Main.plugin.saveResource("Skills/ParticleExample.yml", false);
+	    	Main.plugin.saveResource("Particle/ParticleExample.yml", false);
 	    }
-		particle = skillfile.listFiles();
+		particle = particlefile.listFiles();
 		particleyml = new YamlConfiguration[particle.length];
-		for(int i = 0; i < skills.length; i++) {
+		for(int i = 0; i < particle.length; i++) {
 			particleyml[i] = YamlConfiguration.loadConfiguration(particle[i]);
-		}*/
+		}
 		
 		//物品
 		items = new File("./plugins/SkillSystem/items.yml");
@@ -95,10 +97,19 @@ public class ConfigHandle {
   //载入粒子文件
   public void loadParticle() {
 	  for(int i = 0; i < particle.length; i++) {
-			Iterator<String> itn = skillsyml[i].getKeys(false).iterator();
+			Iterator<String> itn = particleyml[i].getKeys(false).iterator();
 			
 			while(itn.hasNext()) {
 				String key = itn.next();
+
+				ParticleCurve particleeffect = new ParticleCurve(particleyml[i].getString(key + ".x"),
+						particleyml[i].getString(key + ".y"),
+						particleyml[i].getString(key + ".z"),
+						particleyml[i].getStringList(key + ".parameter"),
+						particleyml[i].getString(key + ".color"),
+						particleyml[i].getString(key + ".type"),
+						particleyml[i].getInt(key + ".count"));
+				Main.particleEffect.put(key, particleeffect);
 			}
 			
 	  }

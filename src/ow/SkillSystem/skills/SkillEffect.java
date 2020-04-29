@@ -13,6 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import ow.SkillSystem.Main;
 import ow.SkillSystem.SpecialEffects.*;
+import ow.SkillSystem.SpecialEffects.ParticleEffect.ParticleCurve;
 import ow.SkillSystem.SpecialEffects.ParticleEffect.ParticleEffect;
 import ow.SkillSystem.data.OnlineData;
 import ow.SkillSystem.data.SPlayer;
@@ -45,6 +46,7 @@ public class SkillEffect {   //技能实际效果
     
     //粒子效果与声音效果
     private ParticleEffect particleeffect;
+    private ParticleCurve particlecurve;
     private SoundEffect soundeffect;
     
     //抛射物效果
@@ -121,7 +123,13 @@ public class SkillEffect {   //技能实际效果
         	effect = "ParticleEffect";
         	particleeffect = new ParticleEffect(parts[1] , Integer.parseInt(parts[2]));
         	
-    	}else {
+    	}else if(parts[0].equalsIgnoreCase("ParticleCurveEffect")) {
+    		
+        	effect = "ParticleCurveEffect";
+            particlecurve = Main.particleEffect.get(parts[1]);
+            
+    	}
+    	else {
     		
     		effect = "SoundEffect";
     		soundeffect = new SoundEffect(parts[1],Float.parseFloat(parts[2]),Float.parseFloat(parts[3]));
@@ -278,6 +286,13 @@ public class SkillEffect {   //技能实际效果
     	else if(effect.equalsIgnoreCase("ParticleEffect")) {
     		for(LivingEntity entity : entities) {
     			particleeffect.playNormal(entity.getWorld(), entity.getEyeLocation());
+    		}
+    	}
+    	//粒子曲线
+    	else if(effect.equalsIgnoreCase("ParticleCurveEffect")) {
+    		for(LivingEntity entity : entities) {
+    			Location loc = entity.getLocation();
+    			particlecurve.plays(entity.getWorld(), loc.getX(), loc.getY(), loc.getZ());
     		}
     	}
     	//声音效果

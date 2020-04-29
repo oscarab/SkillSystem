@@ -67,7 +67,7 @@ public class Util {
   public String useMathFunction(String part) {
 	  String funcs[] = new String[] {"cos", "sin", "tan", "atan", "asin", "acos", "log", "random", "sqrt", "pow", "abs", "max", "min"};
 	  for(String f : funcs) {
-		  part.replace(f, "Math." + f);
+		  part = part.replace(f, "Math." + f);
 	  }
 	  return part;
   }
@@ -177,6 +177,7 @@ public class Util {
    * 使玩家执行技能
    */
   public void runSkill(SPlayer player , Skill skill) {
+	
 	  Bukkit.getScheduler().runTask(Main.plugin, new Thread() {
 
 		@Override
@@ -187,6 +188,7 @@ public class Util {
 		}
 		  
 	  });
+	  
   }
   
   /**
