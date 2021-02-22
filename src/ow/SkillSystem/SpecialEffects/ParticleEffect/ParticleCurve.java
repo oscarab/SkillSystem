@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.World;
 
 import com.destroystokyo.paper.ParticleBuilder;
 
@@ -17,7 +16,7 @@ import ow.SkillSystem.Util;
 public class ParticleCurve {
 	
 	//参数情况
-	private class Parameter{
+	protected class Parameter{
 		char parameter;
 		double from, to;
 		double step;
@@ -32,18 +31,24 @@ public class ParticleCurve {
 	}
 	
 	//参数方程
-	String equationX, equationY, equationZ;
+	protected String equationX, equationY, equationZ;
 	//粒子类型
-	Particle particle;
+	protected Particle particle;
 	//颜色
-	Color color;
+	protected Color color;
 	//参数列表
-	List<Parameter> parameters = new ArrayList<>();
+	protected List<Parameter> parameters = new ArrayList<>();
 	//数量
-	int count;
+	protected int count;
+	//X轴调整
+	protected int adjustX;
+	
+	protected List<Double> preX = new ArrayList<>();
+	protected List<Double> preY = new ArrayList<>();
+	protected List<Double> preZ = new ArrayList<>();
 	
 	//初始化粒子曲线或曲面
-	public ParticleCurve(String eq1, String eq2, String eq3, List<String> paras, String colors, String particle, int count) {
+	public ParticleCurve(String eq1, String eq2, String eq3, List<String> paras, String colors, String particle, int count, int adjustX) {
 		equationX = eq1;
 		equationY = eq2;
 		equationZ = eq3;
@@ -64,35 +69,51 @@ public class ParticleCurve {
 		
 		this.particle = Particle.valueOf(particle);
 		this.count = count;
+		this.adjustX = adjustX;
+		
+		preHandle();
 	}
 	
-	public void plays(World world, double x, double y, double z) {
+	protected void preHandle() {
+		Parameter para = parameters.get(0);
+		for(double i = para.from; i <= para.to; i+=para.step) {
+			preX.add(Main.util.getDoubleNumber(equationX.replace("("+para.parameter+")", "" + i), null));
+			preY.add(Main.util.getDoubleNumber(equationY.replace("("+para.parameter+")", ""+ i), null));
+			preZ.add(Main.util.getDoubleNumber(equationZ.replace("("+para.parameter+")", "" + i), null));
+		}
+	}
+	
+	public void plays(Location loc) {
 		Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, new Runnable() {
 
 			@Override
 			public void run() {
+				ParticleBuilder builder = new ParticleBuilder(particle);
+				double nx,ny,nz,temp;
+				double alpha = Math.toRadians(270 - loc.getYaw());
+				double sina = Math.sin(alpha), cosa = Math.cos(alpha);
+				double beta = Math.toRadians(-loc.getPitch());
+				double sinb = Math.sin(beta), cosb = Math.cos(beta);
+				double x = loc.getX(), y = loc.getY(), z = loc.getZ();
+				Location location = loc.clone();
+				int size = preX.size();
 				
-				for(Parameter para : parameters) {
-
-					for(double i = para.from; i <= para.to; i+=para.step) {
-						double nx = x + Main.util.getDoubleNumber(equationX.replace("("+para.parameter+")", "" + i), null);
-						double ny = y + Main.util.getDoubleNumber(equationY.replace("("+para.parameter+")", ""+ i), null);
-						double nz = z + Main.util.getDoubleNumber(equationZ.replace("("+para.parameter+")", "" + i), null);
-						Location location = new Location(world, nx, ny, nz);
-						ParticleBuilder builder = new ParticleBuilder(particle);
-						
-						builder.location(location);
-						builder.color(color);
-						builder.count(count);
-						builder.spawn();
-						
-						try {
-							Thread.sleep(para.delay);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						
-					}
+				for(int j = 0; j < size; j++) {
+					nx = x + preX.get(j);
+					ny = y + preY.get(j);
+					nz = z + preZ.get(j);
+					temp = nx;
+					nx = (nx - x)*cosb - (ny - y)*sinb + x;
+					ny = (temp - x)*sinb + (ny - y)*cosb + y;
+					temp = nx;
+					nx = (nz - z)*sina + (nx - x)*cosa + x;
+					nz = (nz - z)*cosa - (temp - x)*sina + z;   //坐标根据朝向旋转变换
+					location.set(nx, ny, nz);
+					
+					builder.location(location);
+					builder.color(color);
+					builder.count(count);
+					builder.spawn();				
 				}
 				
 			}

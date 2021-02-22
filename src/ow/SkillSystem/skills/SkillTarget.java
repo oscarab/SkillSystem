@@ -47,9 +47,11 @@ public class SkillTarget {      //技能释放的对象
 			
 			for(Entity entity : self.getNearbyEntities(radius, radius, radius)) {
 				if(entity instanceof LivingEntity && target.endsWith("Entity")) {
-					  entities.add((LivingEntity) entity);
+					entities.add((LivingEntity) entity);
+				}else if(entity instanceof Player && target.endsWith("Player")) {
+					entities.add((LivingEntity) entity);
 				}else if(!(entity instanceof Player) && target.endsWith("Mob")) {
-					  entities.add((LivingEntity) entity);
+					entities.add((LivingEntity) entity);
 				}
 			}
 			  
@@ -61,6 +63,8 @@ public class SkillTarget {      //技能释放的对象
 			
 			if(entity != null) {
 				if(target.endsWith("Entity")) {
+					entities.add(entity);
+				}else if(entity instanceof Player && target.endsWith("Player")) {
 					entities.add(entity);
 				}else if(!(entity instanceof Player) && target.endsWith("Mob")) {
 					entities.add(entity);
@@ -75,7 +79,14 @@ public class SkillTarget {      //技能释放的对象
 			
 			if(target.endsWith("Entity")) {
 				entities.addAll(args);
-			}else if(target.endsWith("Mob")){
+			}else if(target.endsWith("Player")) {
+				for(LivingEntity entity : args) {
+					if(entity instanceof Player) {
+						entities.add(entity);
+					}
+				}
+			}
+			else if(target.endsWith("Mob")){
 				for(LivingEntity entity : args) {
 					if(!(entity instanceof Player)) {
 						entities.add(entity);

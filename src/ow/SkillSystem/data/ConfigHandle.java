@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -15,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import ow.SkillSystem.Main;
 import ow.SkillSystem.SpecialEffects.ParticleEffect.ParticleCurve;
+import ow.SkillSystem.SpecialEffects.ParticleEffect.ParticleCurvedSurface;
 import ow.SkillSystem.skills.Skill;
 
 //配置文件处理
@@ -101,15 +101,31 @@ public class ConfigHandle {
 			
 			while(itn.hasNext()) {
 				String key = itn.next();
+				
+				if(particleyml[i].getStringList(key + ".parameter").size() == 1) {
+					ParticleCurve particleeffect = new ParticleCurve(
+							particleyml[i].getString(key + ".x"),
+							particleyml[i].getString(key + ".y"),
+							particleyml[i].getString(key + ".z"),
+							particleyml[i].getStringList(key + ".parameter"),
+							particleyml[i].getString(key + ".color"),
+							particleyml[i].getString(key + ".type"),
+							particleyml[i].getInt(key + ".count"),
+						    particleyml[i].getInt(key + ".adjustX"));
+					Main.particleEffect.put(key, particleeffect);
+				}else {
+					ParticleCurvedSurface particleeffect = new ParticleCurvedSurface(
+							particleyml[i].getString(key + ".x"),
+							particleyml[i].getString(key + ".y"),
+							particleyml[i].getString(key + ".z"),
+							particleyml[i].getStringList(key + ".parameter"),
+							particleyml[i].getString(key + ".color"),
+							particleyml[i].getString(key + ".type"),
+							particleyml[i].getInt(key + ".count"),
+						    particleyml[i].getInt(key + ".adjustX"));
+					Main.particleEffect.put(key, particleeffect);
+				}
 
-				ParticleCurve particleeffect = new ParticleCurve(particleyml[i].getString(key + ".x"),
-						particleyml[i].getString(key + ".y"),
-						particleyml[i].getString(key + ".z"),
-						particleyml[i].getStringList(key + ".parameter"),
-						particleyml[i].getString(key + ".color"),
-						particleyml[i].getString(key + ".type"),
-						particleyml[i].getInt(key + ".count"));
-				Main.particleEffect.put(key, particleeffect);
 			}
 			
 	  }

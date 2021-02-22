@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import ow.SkillSystem.SpecialEffects.ParticleEffect.ParticleCurve;
 import ow.SkillSystem.Thread.*;
+import ow.SkillSystem.asynchronous.Asynchronous;
 import ow.SkillSystem.data.ConfigHandle;
 import ow.SkillSystem.data.Message;
 import ow.SkillSystem.data.OnlineData;
@@ -70,13 +71,9 @@ public class Main extends JavaPlugin{
 		
 		try {
 			message = new Message();
-			
 			handle = new ConfigHandle();
-			handle.loadConfig();
-			handle.loadItems();
-			handle.loadParticle();
-			handle.loadSkills();
-			Bukkit.getConsoleSender().sendMessage("§2配置文件加载成功！");
+			
+			new Asynchronous().handleParticle(handle);
 		} catch (IOException e) {
 			e.printStackTrace();
 			Bukkit.getConsoleSender().sendMessage("§4创建相关配置文件时出现错误！请检查相关文件！");
