@@ -283,10 +283,9 @@ public class SkillEffect {   //技能实际效果
     		for(LivingEntity entity : entities) {
     			
     			if(entity instanceof Player) {
-    				msg = Main.util.replaceAPI(msg, (Player) entity);
+    				entity.sendMessage(Main.util.replaceAPI(msg, (Player) entity));
     			}
     			
-    			entity.sendMessage(msg);
     		}
     	}
     	//粒子效果

@@ -126,4 +126,8 @@ public class OnlineData {
 		return players.get(p.getUniqueId());
 	}
 	
+	public static SPlayer getSPlayer(UUID uuid) {
+		return players.get(uuid);
+	}
+	
 }

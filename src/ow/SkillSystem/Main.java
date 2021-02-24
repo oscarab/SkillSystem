@@ -33,6 +33,7 @@ public class Main extends JavaPlugin{
 	public static ConfigHandle handle;
 	public static Message message;
 	public static String version;
+	public static boolean ready = false;
 	
 	public static HashMap<String,Skill> skillsdata = new HashMap<>();
 	public static List<Skill> skills = new ArrayList<>();
@@ -72,6 +73,9 @@ public class Main extends JavaPlugin{
 		try {
 			message = new Message();
 			handle = new ConfigHandle();
+			handle.loadConfig();
+			handle.loadItems();
+			Bukkit.getConsoleSender().sendMessage("§2基础配置文件初始完成！");
 			
 			new Asynchronous().handleParticle(handle);
 		} catch (IOException e) {

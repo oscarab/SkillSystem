@@ -1,6 +1,6 @@
 package ow.SkillSystem.placeholderExpansion;
 
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import ow.SkillSystem.data.OnlineData;
@@ -20,7 +20,7 @@ public class PlaceholderExtend extends PlaceholderExpansion{
 
 	@Override
 	public String getVersion() {
-		return "1.5.4";
+		return "1.6.1";
 	}
 	
 	@Override
@@ -33,12 +33,12 @@ public class PlaceholderExtend extends PlaceholderExpansion{
         return true;
     }
 	
-	public String onPlaceholderRequest(Player player, String identifier){
+	public String onRequest(OfflinePlayer player, String identifier){
 		if(player == null) {
 			return "";
 		}
 		
-		SPlayer p = OnlineData.getSPlayer(player);
+		SPlayer p = OnlineData.getSPlayer(player.getUniqueId());
 		if(p.isAttribute("Attribute." + identifier)) {
 			return ""+p.getAttribute("Attribute." + identifier);
 		}

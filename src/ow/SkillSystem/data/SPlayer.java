@@ -132,6 +132,8 @@ public class SPlayer {
 	   
 	   Player player = getPlayer();
 	   
+	   if(!Main.ready) return;
+	   
 	   if(skill.getIsNeedPermission() && !player.hasPermission("SkillSystem."+skill.getName())) {
 		   player.sendMessage("§4你没有使用此技能的权限！");
 		   return;
